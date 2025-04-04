@@ -8,11 +8,12 @@ use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
+
 class Register extends Component
 {
 
     #[Validate('required|string|min:3|max:250')]
-    public $name;
+    public $username;
 
     #[Validate('required|email|max:250|unique:users,email')]
     public $email;
@@ -26,13 +27,13 @@ class Register extends Component
 
         $this->validate();
         User::create([
-            'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
             'password' => Hash::make($this->password),
         ]);
 
 
-        // session()->flash('message', 'You have successfully registered');
+        session()->flash('message', 'You have successfully registered');
 
         return redirect()->route('login');
     }

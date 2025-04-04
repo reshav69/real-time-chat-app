@@ -1,7 +1,7 @@
 <div>
     <form wire:submit="register">
         <div>
-            <input type="text" id="name" wire:model="name">
+            <input type="text" id="name" wire:model="username">
         </div>
         <div>
             <input type="email" id="email" wire:model="email">

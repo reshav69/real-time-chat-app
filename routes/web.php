@@ -5,9 +5,11 @@ use App\Livewire\Register;
 use App\Livewire\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Logout;
+use App\Livewire\UserProfile;
+use App\Livewire\UserEdit;
 
 Route::get('/', function () {
-    return view('livewire.auth.dashboard');
+    return view('welcome');
 });
 
 Route::group(['middleware'=>'guest'], function(){
@@ -18,6 +20,8 @@ Route::group(['middleware'=>'guest'], function(){
 Route::group(['middleware'=>'auth'], function(){
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/logout', Logout::class)->name('logout');
+    Route::get('/profile/edit', UserEdit::class)->name('profile.edit');
+    Route::get('/profile/{username}', UserProfile::class)->name('profile.show');
 });
 
 // Route::get('/login', Login::class)->name('login');
