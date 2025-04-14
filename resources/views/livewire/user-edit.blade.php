@@ -15,42 +15,75 @@
 
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
              focus:outline-none focus:shadow-outline"
-             id="username" type="text" placeholder="Username" wire:model="username">
+             id="username" type="text" wire:model="username">
              @error('username') <span style="color: red;">{{ $message }}</span> @enderror
         </div>
 
         <!-- Email -->
-        <label for="email">Email:</label>
-        <input type="email" id="email" wire:model="email">
-        @error('email') <span style="color: red;">{{ $message }}</span> @enderror
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+                Email:</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                 focus:outline-none focus:shadow-outline"
+                type="email" id="email" wire:model="email">
+            @error('email') <span style="color: red;">{{ $message }}</span> @enderror
 
-        <!-- Bio -->
-        <label for="bio">Bio:</label>
-        <textarea id="bio" wire:model="bio"></textarea>
-        @error('bio') <span style="color: red;">{{ $message }}</span> @enderror
+        </div>
 
-        <!-- Profile Image -->
-        <label for="profile_image">Current Profile Image:</label>
-        @if ($profile_image)
-            <img src="{{ asset('storage/' . $profile_image) }}" width="100">
-        @else
-            <p>No profile image set.</p>
-        @endif
+        <div class="mb-4">
+            <!-- Bio -->
+            <label for="bio" class="block text-gray-700 text-sm font-bold mb-2">
+                Bio:</label>
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                 focus:outline-none focus:shadow-outline"
+             id="bio" wire:model="bio"></textarea>
+            @error('bio') <span style="color: red;">{{ $message }}</span> @enderror
 
-        <!-- Upload New Profile Image -->
-        <label for="new_profile_image">Upload New Profile Image:</label>
-        <input type="file" wire:model="new_profile_image">
-        @error('new_profile_image') <span style="color: red;">{{ $message }}</span> @enderror
+        </div>
 
-        <!-- Password -->
-        <label for="password">New Password (Leave blank if unchanged):</label>
-        <input type="password" id="password" wire:model="password">
+        <div class="mb-4">
+            <!-- Profile Image -->
+            <label for="profile_image">Current Profile Image:</label>
+            @if ($profile_image)
+                <img src="{{ asset('storage/' . $profile_image) }}" width="100">
+            @else
+                <p>No profile image set.</p>
+            @endif
 
-        <label for="password_confirmation">Confirm Password:</label>
-        <input type="password" id="password_confirmation" wire:model="password_confirmation">
-        @error('password') <span style="color: red;">{{ $message }}</span> @enderror
+        </div>
 
-        <button type="submit">Update Profile</button>
+        <div class="mb-4">
+            <!-- Upload New Profile Image -->
+            <label for="new_profile_image">Upload New Profile Image:</label>
+            <input type="file" wire:model="new_profile_image">
+            @error('new_profile_image') <span style="color: red;">{{ $message }}</span> @enderror
+
+        </div>
+
+        <div class="mb-4">
+            <!-- Password -->
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                New Password (Leave blank if unchanged):</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                 focus:outline-none focus:shadow-outline"
+             type="password" id="password" wire:model="password">
+
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
+                Confirm Password:</label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
+                focus:outline-none focus:shadow-outline"
+             type="password" id="password_confirmation" wire:model="password_confirmation">
+            @error('password') <span style="color: red;">{{ $message }}</span> @enderror
+
+        </div>
+
+
+        <button class="bg-blue-500 hover:bg-blue-700
+         text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+         type="submit">Update Profile</button>
     </form>
 </div>
 {{-- <div class="w-full max-w-xs">

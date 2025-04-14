@@ -37,9 +37,40 @@ user authentication
     logout--
 
 user profiling
-    edit data
+    visit other user's profile --
+    edit data -- 
 */
 /*
 friend system
+    send request
+    receive request
+    accept request
+    unfriend
 */
 
+//STYLING
+
+/*
+private messaging
+    select user to message to
+    go to message box
+    include web socket
+    send/receive message
+*/
+
+/*
+Creating groups
+    private groups
+    public groups
+    adding members
+    inviting
+*/
+/*
+sending group messages
+*/
+
+/*
+next word suggestion
+    ngram
+
+*/

@@ -3,9 +3,8 @@
     <p>{{ $user->bio }}</p>
 
     @if(auth()->id() !== $user->id)
-        <button wire:click="sendFriendRequest">Add Friend</button>
+        @livewire('friend-request', ['receiver_id' => $user->id])
     @else
-        <p>Edit Profile?</p>
-        <a href="{{ route('profile.edit') }}">Go to Edit page</a>
+        <a href="{{ route('profile.edit') }}">Edit Profile?</a>
     @endif
 </div>

@@ -43,7 +43,7 @@ class UserEdit extends Component
         //     $imagePath = $this->new_profile_image->store('profile_images', 'public');
         //     $user->profile_image = $imagePath;
         // }
-        $user->name = $this->username;
+        $user->username = $this->username;
         $user->email = $this->email;
         $user->bio = $this->bio;
 
