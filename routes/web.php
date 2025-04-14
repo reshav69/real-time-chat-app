@@ -7,6 +7,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\Logout;
 use App\Livewire\UserProfile;
 use App\Livewire\UserEdit;
+use App\Livewire\FriendRequestsPage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/logout', Logout::class)->name('logout');
     Route::get('/profile/edit', UserEdit::class)->name('profile.edit');
     Route::get('/profile/{username}', UserProfile::class)->name('profile.show');
+    Route::get('/friendrequests', FriendRequestsPage::class)->name('friend.requests');
 });
 
 // Route::get('/login', Login::class)->name('login');
