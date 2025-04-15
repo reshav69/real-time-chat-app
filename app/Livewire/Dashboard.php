@@ -15,6 +15,7 @@ class Dashboard extends Component
     }
     public function render()
     {
+        view()->share('title', 'Dashboard');
         return view('livewire.auth.dashboard');
     }
 }

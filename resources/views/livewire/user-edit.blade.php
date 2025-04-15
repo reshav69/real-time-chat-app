@@ -7,35 +7,42 @@
         <div style="color: green;">{{ session('message') }}</div>
     @endif
 
-    <form wire:submit.prevent="updateProfile" class="bg-white rounded px-8 pt-6 pb-8 mb-4">
+    <form wire:submit.prevent="updateProfile" class="border container mx-auto rounded px-8 pt-6 pb-8 mb-4">
 
+        
         <div class="mb-4">
-            <label for="username" class="block text-gray-700 text-sm font-bold mb-2">
+            <x-input id="username" type="text" wire:model="username" name="username"
+                label="Username:"
+            />
+            {{-- <label for="username" class="block text-gray-700 text-sm font-bold mb-2">
                 Username:</label>
 
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
              focus:outline-none focus:shadow-outline"
-             id="username" type="text" wire:model="username">
+             id="username" type="text" wire:model="username"> --}}
              @error('username') <span style="color: red;">{{ $message }}</span> @enderror
         </div>
 
         <!-- Email -->
         <div class="mb-4">
-            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+            <x-input id="email" type="email" wire:model="email" name="email"
+                label="Email:"
+            />
+            {{-- <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
                 Email:</label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                  focus:outline-none focus:shadow-outline"
-                type="email" id="email" wire:model="email">
+                type="email" id="email" wire:model="email"> --}}
             @error('email') <span style="color: red;">{{ $message }}</span> @enderror
 
         </div>
 
         <div class="mb-4">
             <!-- Bio -->
-            <label for="bio" class="block text-gray-700 text-sm font-bold mb-2">
+            <label for="bio" class="block text-gray-200 text-sm font-bold mb-2">
                 Bio:</label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
-                 focus:outline-none focus:shadow-outline"
+            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight
+                 focus:outline-none focus:shadow-outline text-white"
              id="bio" wire:model="bio"></textarea>
             @error('bio') <span style="color: red;">{{ $message }}</span> @enderror
 
@@ -62,20 +69,26 @@
 
         <div class="mb-4">
             <!-- Password -->
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+            <x-input id="password" type="password" wire:model="password" name="password"
+                label="New Password (Leave blank if unchanged):"
+            />
+            {{-- <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                 New Password (Leave blank if unchanged):</label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                  focus:outline-none focus:shadow-outline"
-             type="password" id="password" wire:model="password">
+             type="password" id="password" wire:model="password"> --}}
 
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
+            <x-input id="password_confirmation" type="password" wire:model="password_confirmation" name="password_confirmation"
+                label="Confirm Password"
+            />
+            {{-- <label class="block text-gray-700 text-sm font-bold mb-2" for="password_confirmation">
                 Confirm Password:</label>
             <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-none focus:shadow-outline"
-             type="password" id="password_confirmation" wire:model="password_confirmation">
+             type="password" id="password_confirmation" wire:model="password_confirmation"> --}}
             @error('password') <span style="color: red;">{{ $message }}</span> @enderror
 
         </div>
