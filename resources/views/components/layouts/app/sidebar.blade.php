@@ -29,7 +29,9 @@
                 <a href="{{ route('friend.requests') }}" class="border-sky-600 border block py-2 px-4 hover:bg-gray-200 hover:text-gray-900 rounded">Friend Requests</a>
                 
                 <div class="fixed bottom-0 border-t w-48 mb-4">
-                    <p class="mt-4 mb-4">Profile</p>
+                    <p class="mt-4 mb-4"><a href="{{ route('profile.show',['username'=>auth()->user()->username]) }}">
+                        {{ auth()->user()->username }}
+                    </a></p>
                     <a href="/logout" class="border-sky-600 border block py-1 px-1 hover:bg-red-500 rounded">Logout</a>
                 </div>
                 @endauth
@@ -48,10 +50,14 @@
 
     <div class="fixed top-0 right-0 h-full w-48 sm:w-64 shadow-md border-indigo-500 border-l-2 text-white">
         <div class="p-4">
-            <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Menu TWO</h2>
+            <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Friends</h2>
             <nav class="space-y-2">
-                <p>Action 1</p>
-
+                @auth()
+                    @foreach (auth()->user()->friends as $friendship) 
+                        <p>{{ $friendship->friend->username }}</p>
+                    @endforeach
+                    
+                @endauth
             </nav>
         </div>
     </div>

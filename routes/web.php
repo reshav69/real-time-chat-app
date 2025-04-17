@@ -44,8 +44,8 @@ user profiling
 */
 /*
 friend system
-    send request
-    receive request
+    send request --
+    receive request --
     accept request
     unfriend
 */

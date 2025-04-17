@@ -1,15 +1,10 @@
-
-<div class="w-full max-w-xs">
-
-    <h2>Edit Profile</h2>
+<div class="p-4">
 
     @if (session()->has('message'))
         <div style="color: green;">{{ session('message') }}</div>
     @endif
 
-    <form wire:submit.prevent="updateProfile" class="border container mx-auto rounded px-8 pt-6 pb-8 mb-4">
-
-        
+    <form wire:submit.prevent="updateProfile" class="w-full border container mx-auto rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <x-input id="username" type="text" wire:model="username" name="username"
                 label="Username:"

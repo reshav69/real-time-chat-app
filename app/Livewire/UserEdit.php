@@ -58,6 +58,7 @@ class UserEdit extends Component
 
     public function render()
     {
+        view()->share('title', 'Edit Profile');
         return view('livewire.user-edit');
     }
 }

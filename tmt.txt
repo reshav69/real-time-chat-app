@@ -7,77 +7,69 @@ use App\Models\FriendRequest as FR;
 use App\Models\Friend;
 class FriendRequest extends Component
 {
-    public $sender_id;
     public $receiver_id;
-    public $request_status = '';
-    public $requestId;
-    public function mount($receiver_id,$requestId = null){
-        $this->sender_id = auth()->id();
+    public $sender_id;
+    public $request_status = 'none';
+    public $request_exists = false;
+
+    public function mount($receiver_id)
+    {
         $this->receiver_id = $receiver_id;
-        $this->request_id = $requestId;
+        $this->sender_id = auth()->id();
         $this->request_status = $this->checkFriendRequestStatus();
     }
 
-    public function checkRequest(){
-        $req=  FR::where(function ($query) {
-            $query->where('sender_id', $this->sender_id)
-                  ->where('receiver_id', $this->receiver_id);
-        })->orWhere(function ($query) {
-            $query->where('sender_id', $this->receiver_id)
-                  ->where('receiver_id', $this->sender_id);
-        });
-        return $req->exists();
-    }
 
-    public function checkFriendRequestStatus(){
-        //if req exist, sender = auth -> sent
-        $request = FR::where(function ($query) {
+    public function getRequest(){
+        $req =  FR::where(function ($query) {
             $query->where('sender_id', $this->sender_id)
                   ->where('receiver_id', $this->receiver_id);
         })->orWhere(function ($query) {
             $query->where('sender_id', $this->receiver_id)
                   ->where('receiver_id', $this->sender_id);
         })->first();
+        if(!$req)
+            return 1;
+        return $req;
+    }
+
+    public function requestExist(){
+        $this->request_exists = true;
+    }
+
+    public function checkFriendRequestStatus(){
+        //if req exist, sender = auth -> sent
+        $request = $this->getRequest();
         // dd($request);
 
-        if($this->checkRequest() && $request->sender_id === $this->sender_id ){
+        if($this->request_exists && $request->sender_id === $this->sender_id ){
             return 'sent';
         }
-        if($this->checkRequest() && $request->sender_id === $this->receiver_id){
+        //if req exist, receiver = auth -> receiver
+        if($this->request_exists && $request->sender_id === $this->receiver_id){
             return 'received';
         }
-
-        if($this->isFriends())
-            return 'friends';
-        return;
+        return 'none';
     }
 
-    public function isFriends(){
-        return Friend::where(function($q){
-            $q->where('user_id',$this->sender_id)->where('friend_id',$this->receiver_id);
-        })->orWhere(function($q){
-            $q->where('user_id',$this->receiver_id)->where('friend_id',$this->sender_id);
-        })->exists();
-    }
-
-    //send request
     public function sendRequest(){
-        if($this->checkRequest()){
+        if($this->request_exists){
             session()->flash('error', 'Friend request already exists.');
             return;
         }
+
         FR::create([
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'status' => 'pending',
         ]);
-
         $this->request_status = 'sent';
         session()->flash('success', 'Friend request sent!');
     }
 
+
     public function cancelRequest(){
-        if($this->checkRequest()){
+        if($this->request_exists){
             $request = FR::where('sender_id', $this->sender_id)
                 ->where('receiver_id', $this->receiver_id)
                 ->first();
@@ -91,13 +83,10 @@ class FriendRequest extends Component
         session()->flash('error', 'friend request cancel failed.');
     }
 
-    public function acceptRequest(){
-        if($this->isFriends()){
-            session()->flash('error', 'Already Friends.');
-            return;
-        }
-        $request = FR::find($this->requestId);
-        // dd($request);
+
+    //accept
+    public function acceptRequest($requestId){
+        $request = FR::find('request_id');
         if($request && $request->receiver_id === auth()->id()){
             Friend::create([
                 'user_id'=>$request->sender_id,
@@ -109,18 +98,16 @@ class FriendRequest extends Component
                 'friend_id' => $request->sender_id,
             ]);
             $request->delete();
-            $this->request_status = 'friends';
             session()->flash('success', 'Friend request accepted.');
         }
 
     }
-
-    public function rejectRequest(){
-        $request = FR::find($this->requestId);
+    //reject
+    public function rejectRequest($requestId){
+        $request = FR::find($requestId);
 
         if ($request && $request->receiver_id === auth()->id()) {
             $request->delete();
-            $this->request_status = 'none';
             session()->flash('success', 'Friend request rejected.');
         }
     }
@@ -133,9 +120,12 @@ class FriendRequest extends Component
             $query->where('user_id', $friendId)
                 ->where('friend_id', auth()->id());
         })->delete();
-        $this->request_status = 'none';
+
         session()->flash('success', 'Unfriended successfully.');
     }
+
+
+
     public function render()
     {
         return view('livewire.friend-request');
