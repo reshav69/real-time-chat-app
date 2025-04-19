@@ -8,7 +8,7 @@ use App\Livewire\Logout;
 use App\Livewire\UserProfile;
 use App\Livewire\UserEdit;
 use App\Livewire\FriendRequestsPage;
-
+use App\Livewire\ChatBox;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,7 +24,13 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/profile/edit', UserEdit::class)->name('profile.edit');
     Route::get('/profile/{username}', UserProfile::class)->name('profile.show');
     Route::get('/friendrequests', FriendRequestsPage::class)->name('friend.requests');
+
+    Route::get('/chat/{username}', ChatBox::class)->name('chat.show');
 });
+// Route::get('/chat/{username}', function ($username) {
+//     $receiver = \App\Models\User::where('username', $username)->firstOrFail();
+//     return view('livewire.chat-box', ['receiver' => $receiver]);
+// })->middleware('auth')->name('chat.show');
 
 // Route::get('/login', Login::class)->name('login');
 // Route::get('/register', Register::class)->name('register');
@@ -46,7 +52,7 @@ user profiling
 friend system
     send request --
     receive request --
-    accept request
+    accept request --
     unfriend
 */
 
