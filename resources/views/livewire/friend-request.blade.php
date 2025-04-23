@@ -28,6 +28,9 @@
                 Reject
             </button>
         @elseif ($request_status === 'friends')
+            <button wire:click="unfriend" class="bg-gray-500 text-white px-3 py-1 rounded">
+                Unfriend
+            </button>
             <p>Already Friends</p>
         @endif
 

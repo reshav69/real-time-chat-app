@@ -14,7 +14,7 @@ class FriendRequest extends Component
     public function mount($receiver_id,$requestId = null){
         $this->sender_id = auth()->id();
         $this->receiver_id = $receiver_id;
-        $this->request_id = $requestId;
+        $this->requestId = $requestId;
         $this->request_status = $this->checkFriendRequestStatus();
     }
 
@@ -49,7 +49,7 @@ class FriendRequest extends Component
 
         if($this->isFriends())
             return 'friends';
-        return;
+        return 'none';
     }
 
     public function isFriends(){

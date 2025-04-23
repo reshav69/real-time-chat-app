@@ -56,15 +56,20 @@ friend system
     unfriend
 */
 
-//STYLING
+//STYLING -
 
 /*
 private messaging
-    select user to message to
-    go to message box
+    select user to message to --
+    go to message box --
     include web socket
+    make events
+    broadcast events
+    wire events
     send/receive message
 */
+
+// GENERAL FIXES
 
 /*
 Creating groups
@@ -80,5 +85,9 @@ sending group messages
 /*
 next word suggestion
     ngram
+    create algorithm
+    host algorithm
+    read from endpoint
+    apply on frontend
 
 */

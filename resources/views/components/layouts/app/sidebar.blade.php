@@ -41,7 +41,7 @@
     </div>
     
 
-    <div class="flex-1 ml-48 sm:ml-64 mr-48 sm:mr-64">
+    <div class="flex-1 ml-48 sm:ml-64 mr-48 sm:mr-64 text-white">
 
         @include('components.layouts.app.navbar')
         
@@ -103,5 +103,6 @@
             </nav>
         </div>
     </div> --}}
+    @livewireScripts
 </body>
 </html>

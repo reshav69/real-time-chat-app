@@ -28,25 +28,41 @@
     </div>
 
     <!-- Messages Scrollable Area -->
-    <div class="flex-1 overflow-y-auto space-y-2 pr-2" id="messages">
-        {{-- Loop over messages here --}}
+    <div class="flex-1 overflow-y-auto space-y-2 pr-2 text-black" id="messages">
+        {{-- Livewire will automatically re-render this section when $messages changes --}}
         @foreach ($messages as $msg)
-            <div class="max-w-[70%] p-2 rounded 
-                {{ $msg->sender_id === auth()->id() ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 self-start' }}">
-                {{ $msg->message }}
+            <div class="max-w-[70%] p-2 rounded
+                {{-- This check relies *only* on sender_id, which is available --}}
+                {{ $msg['sender_id'] === auth()->id() ? 'bg-blue-500 text-white self-end' : 'bg-gray-200 self-start' }}
+                {{ $msg['sender_id'] === auth()->id() ? 'ml-auto' : 'mr-auto' }}">
+    
+                {{-- Display message content --}}
+                {{ $msg['message'] }}
+    
+                {{-- Optional: Display timestamp (created_at is available) --}}
+                <small class="block text-xs text-right {{ $msg['sender_id'] === auth()->id() ? 'text-blue-300' : 'text-gray-500' }}">{{ \Carbon\Carbon::parse($msg['created_at'])->format('H:i') }}</small>
             </div>
         @endforeach
-    </div>
+    </div
+
+
 
     <!-- Message Input -->
 
     <form wire:submit.prevent="sendMessage" class="w-full flex items-center justify-between">
-        <x-input wire:model.defer="newMessage" name="message" type="text"
-         placeholder="Type your message..." class="w-2xl"/>
+        <x-input wire:model="message" name="message" type="text"
+         placeholder="Type your message..." class="w-2xl" autocomplete="off"/>
         <button type="submit" class="bg-indigo-600 text-white w-[100px] px-5 py-1 rounded hover:bg-indigo-700">Send</button>
     </form>
+
 </div>
 
+@script
+<script>
 
-
-
+    Livewire.on('scrollToBottom', () => {
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+</script>
+@endscript
