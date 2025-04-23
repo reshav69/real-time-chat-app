@@ -17,7 +17,7 @@
         </div>
         <div class="mb-4">
             <x-input type="password" id="password_confirmation" wire:model="password_confirmation"
-             name="password_confirmation" label="Input password"/>
+             name="password_confirmation" label="Confirm password"/>
             {{-- <input type="password" id="password_confirmation" wire:model="password_confirmation"/> --}}
         </div>
 

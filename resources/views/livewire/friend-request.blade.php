@@ -8,7 +8,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <p>{{$request_status}}</p>
+    {{-- <p>{{$request_status}}</p> --}}
     <div>
         @if ($request_status === 'none')
         <button wire:click="sendRequest" class="bg-blue-500 text-white px-3 py-1 rounded">
@@ -31,6 +31,8 @@
             <button wire:click="unfriend" class="bg-gray-500 text-white px-3 py-1 rounded">
                 Unfriend
             </button>
+            <a href="{{ route('chat.show',['username',$receiver_id]) }}"></a>
+
             <p>Already Friends</p>
         @endif
 

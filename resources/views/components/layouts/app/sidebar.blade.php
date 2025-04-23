@@ -16,7 +16,7 @@
 </head>
 <body class="min-h-screen bg-white dark:bg-zinc-800 flex">
 
-    <div class="h-full w-48 sm:w-64 shadow-md border-indigo-500 border-r-2 text-white fixed top-0 left-0">
+    <div class="h-full w-44 sm:w-60 shadow-md border-indigo-500 border-r text-white fixed top-0 left-0">
         <div class="p-4">
             <h2 class="text-lg font-semibold mb-4 border-indigo-500 border-b">Menu</h2>
             <nav class="space-y-2 w-full">
@@ -41,7 +41,7 @@
     </div>
     
 
-    <div class="flex-1 ml-48 sm:ml-64 mr-48 sm:mr-64 text-white">
+    <div class="flex-1 ml-48 mr-auto ml-auto sm:ml-60 mr-44 sm:mr-64 text-white">
 
         @include('components.layouts.app.navbar')
         
@@ -49,28 +49,16 @@
 
     </div>
 
-    <div class="h-full w-48 sm:w-64 shadow-md border-indigo-500 border-l-2 text-white fixed top-0 right-0">
+    <div class="h-full w-48 sm:w-64 shadow-md border-indigo-500 border-l text-white fixed top-0 right-0">
+        @auth()
         <div class="p-4 h-[calc(100vh-64px)] overflow-y-auto">
             <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Friends</h2>
             <nav class="space-y-2">
-                @auth()
-                @foreach (auth()->user()->friends as $friend)
-                <a href="{{ route('chat.show', ['username' => $friend->friend->username]) }}"
-                    class="block py-2 px-3 rounded hover:bg-indigo-500 hover:text-white transition-all">
-                     {{ $friend->friend->username }}
-                 </a>
-                {{-- <a href = "{{ route('chat.show',['username'=>$friend->friend->username]) }}">
-                    {{ $friend->friend->id }}:{{ $friend->friend->username }}</a> --}}
-                {{-- <button 
-                    wire:click="$emit('openChat', {{ $friend->friend->id }})" 
-                    class="block w-full text-left px-2 py-1 hover:bg-indigo-600">
-                    {{ $friend->friend->username }}
-                </button> --}}
-                @endforeach
+                @livewire('search-component')
                     
-                @endauth
             </nav>
         </div>
+        @endauth
     </div>
     {{-- <div class="text-white">
         

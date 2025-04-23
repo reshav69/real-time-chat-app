@@ -1,7 +1,10 @@
-<div class="text-white">
-    <h1 class="text-3xl">Hello {{ auth()->user()->username }} !!!</h1>
+<div class="text-white p-4">
+    <h1 class="text-3xl mb-5">Hello {{ auth()->user()->username }} !!!</h1>
 
-    {{-- <livewire:chat-box /> --}}
+    <p class="border-b border-gray-400 p-2 mb-5">Your Friends:</p>
+    
+
+    <livewire:friend-list />
 
 </div>
 {{-- <x-layouts.app :title="'Dashboard'">

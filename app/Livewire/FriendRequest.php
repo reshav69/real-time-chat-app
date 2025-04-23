@@ -5,12 +5,14 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\FriendRequest as FR;
 use App\Models\Friend;
+use App\Models\User;
 class FriendRequest extends Component
 {
     public $sender_id;
     public $receiver_id;
     public $request_status = '';
     public $requestId;
+    public $receiveruname;
     public function mount($receiver_id,$requestId = null){
         $this->sender_id = auth()->id();
         $this->receiver_id = $receiver_id;
@@ -125,7 +127,8 @@ class FriendRequest extends Component
         }
     }
     //unfriend
-    public function unfriend($friendId){
+    public function unfriend(){
+        $friendId = $this->receiver_id;
         Friend::where(function ($query) use ($friendId) {
             $query->where('user_id', auth()->id())
                 ->where('friend_id', $friendId);

@@ -32,10 +32,6 @@ Route::group(['middleware'=>'auth'], function(){
 //     return view('livewire.chat-box', ['receiver' => $receiver]);
 // })->middleware('auth')->name('chat.show');
 
-// Route::get('/login', Login::class)->name('login');
-// Route::get('/register', Register::class)->name('register');
-// Route::get('/dashboard', Dashboard::class)->name('dashboard');
-// Route::get('/logout', Logout::class)->name('logout');
 
 //todo
 /*
@@ -62,8 +58,8 @@ friend system
 private messaging
     select user to message to --
     go to message box --
-    include web socket
-    make events
+    include web socket --
+    make events --
     broadcast events
     wire events
     send/receive message

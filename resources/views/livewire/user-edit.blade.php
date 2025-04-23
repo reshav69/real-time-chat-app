@@ -36,8 +36,8 @@
             <!-- Bio -->
             <label for="bio" class="block text-gray-200 text-sm font-bold mb-2">
                 Bio:</label>
-            <textarea class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight
-                 focus:outline-none focus:shadow-outline text-white"
+            <textarea class="shadow appearance-none border rounded py-2 px-3 leading-tight
+                 focus:outline-none focus:shadow-outline text-white" cols="30" rows="5"
              id="bio" wire:model="bio"></textarea>
             @error('bio') <span style="color: red;">{{ $message }}</span> @enderror
 
