@@ -26,7 +26,8 @@ class ChatBox extends Component
         $this->sender_id = Auth::user()->id;
         $this->receiver_id = User::where('username',$username)->first()->id;
         // dd($this->receiver_id);
-        $this->receiver = User::find($this->receiver_id)->first();
+        $this->receiver = User::find($this->receiver_id);
+        // dd($this->receiver);
 
         $messages = PrivateMessage::where(function ($query) {
             $query->where('sender_id', $this->sender_id)
@@ -75,7 +76,7 @@ class ChatBox extends Component
     }
 
 
-    #[On('echo-private:chat-channel.{receiver_id},MessageSentEvent')]
+    #[On('echo-private:chat-channel.{sender_id},MessageSentEvent')]
     // #[On('MessageSentEvent')]
     public function listenForMessage($event)
     {
@@ -85,6 +86,7 @@ class ChatBox extends Component
             ->first();
 
         $this->appendChatMessage($chatMessage);
+        $this->dispatch('scrollToBottom');
     }
 
     public function render()

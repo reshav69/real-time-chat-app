@@ -14,9 +14,9 @@ window.Echo = new Echo({
 });
 
 
-console.log(window.authUserId)
-    window.Echo.private(`chat-channel.${window.authUserId}`)
-    .listen('MessageSentEvent', (e) => {
-        console.log("Echo received message: ", e);
-        window.Livewire.dispatch('MessageSentEvent', e);
-    });
+// console.log(window.authUserId)
+//     window.Echo.private(`chat-channel.${window.authUserId}`)
+//     .listen('MessageSentEvent', (e) => {
+//         console.log("Echo received message: ", e);
+//         window.Livewire.dispatch('MessageSentEvent', e);
+//     });

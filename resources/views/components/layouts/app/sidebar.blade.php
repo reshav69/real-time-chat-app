@@ -14,7 +14,7 @@
     />
     @vite('resources/css/app.css')
 </head>
-<body class="min-h-screen bg-white dark:bg-zinc-800 flex">
+<body class="min-h-screen light:bg-white dark:bg-zinc-900 flex">
 
     <div class="h-full w-44 sm:w-60 shadow-md border-indigo-500 border-r text-white fixed top-0 left-0">
         <div class="p-4">
@@ -25,15 +25,16 @@
                 <a href="/register" class="block py-2 px-4 hover:bg-gray-200 hover:text-gray-900 rounded">Register</a>
                 @endguest
                 @auth()
-                <a href="/dashboard" class="border-sky-600 border block py-2 px-4 hover:bg-gray-200 hover:text-gray-900 rounded">Dashboard</a>
-                <a href="{{ route('friend.requests') }}" class="border-sky-600 border block py-2 px-4 hover:bg-gray-200 hover:text-gray-900 rounded">Friend Requests</a>
+                <a href="/dashboard" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Dashboard</a>
+                <a href="{{ route('friend.requests') }}" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Friend Requests</a>
                 
                 <div class="fixed bottom-0 border-t w-48 mb-4">
                     <p class="mt-4 mb-4 font-bold underline">
                         <a href="{{ route('profile.show',['username'=>auth()->user()->username]) }}">
                         {{ auth()->user()->username }}
                     </a></p>
-                    <a href="/logout" class="border-sky-600 border block py-1 px-1 hover:bg-red-500 rounded">Logout</a>
+                    <a href="/logout" class="border-sky-600 border block py-1 px-1 hover:bg-red-500 rounded">
+                        Logout</a>
                 </div>
                 @endauth
             </nav>
@@ -41,7 +42,7 @@
     </div>
     
 
-    <div class="flex-1 ml-48 mr-auto ml-auto sm:ml-60 mr-44 sm:mr-64 text-white">
+    <div class="flex-1 ml-44 mr-auto ml-auto sm:ml-60 mr-40 sm:mr-60 text-white">
 
         @include('components.layouts.app.navbar')
         
@@ -49,12 +50,20 @@
 
     </div>
 
-    <div class="h-full w-48 sm:w-64 shadow-md border-indigo-500 border-l text-white fixed top-0 right-0">
+    <div class="h-full w-40 sm:w-60 shadow-md border-indigo-500 border-l text-white fixed top-0 right-0">
         @auth()
-        <div class="p-4 h-[calc(100vh-64px)] overflow-y-auto">
-            <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Friends</h2>
+        <div class="p-4 h-[calc(100vh-300px)] overflow-y-auto">
+            <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Search</h2>
             <nav class="space-y-2">
                 @livewire('search-component')
+                    
+            </nav>
+        </div>
+        {{-- <hr> --}}
+        <div class="p-4 h-[calc(100vh-64px)] overflow-y-auto">
+            <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Recent Chats</h2>
+            <nav class="space-y-2">
+                WORK TO BE DONE
                     
             </nav>
         </div>

@@ -11,9 +11,13 @@ class SearchComponent extends Component
     public $search='';
     public function render()
     {
+        $users = [];
 
-        $users  = User::where('username', 'like', '%'.$this->search.'%')->get();
+        if (!empty($this->search)) {
+            $users = User::where('username', 'like', '%' . $this->search . '%')->get();
+        }
 
-        return view('livewire.search-component',['users'=>$users]);
+        return view('livewire.search-component', ['users' => $users]);
     }
+
 }

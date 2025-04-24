@@ -15,7 +15,7 @@
     </h2>
 
 </div> --}}
-<div class="m-5 p-4 rounded h-[85vh] flex flex-col relative shadow">
+<div class="m-5 p-4 rounded h-[86vh] flex flex-col relative shadow ">
 
     <!-- Chat Header -->
     <div class="border-b pb-2 mb-2 flex justify-between items-center">
@@ -51,6 +51,7 @@
             </div>
         @endforeach
     </div>
+    {{-- <div id="lastMessage"></div> --}}
 
 
 
@@ -58,7 +59,10 @@
 
     <form wire:submit.prevent="sendMessage" class="mt-7 w-full flex items-center justify-between">
         <x-input wire:model="message" name="message" type="text"
-         placeholder="Type your message..." class="w-2xl" autocomplete="off"/>
+         placeholder="Type your message..." class="min-w-[50vw] w-auto" autocomplete="off" list="chat"/>
+         <datalist id="chat">
+
+         </datalist>
         <button type="submit" class="bg-indigo-600 text-white w-[100px] px-5 py-1 rounded hover:bg-indigo-700">Send</button>
     </form>
 
@@ -66,10 +70,15 @@
 
 @script
 <script>
-    window.authUserId = {{ auth()->id() }};
+
+
     Livewire.on('scrollToBottom', () => {
-        const messagesDiv = document.getElementById('messages');
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        
+        let messagesDiv = document.querySelector('#messages');
+        setTimeout(() => {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 50);
+        // messagesDiv.scrollTop = messagesDiv.scrollHeight;
     });
 </script>
 @endscript

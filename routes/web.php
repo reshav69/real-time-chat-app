@@ -60,12 +60,14 @@ private messaging
     go to message box --
     include web socket --
     make events --
-    broadcast events
-    wire events
-    send/receive message
+    broadcast events --
+    wire events -- 
+    send/receive message -- 
 */
 
 // GENERAL FIXES
+    //online status
+    //notify?
 
 /*
 Creating groups

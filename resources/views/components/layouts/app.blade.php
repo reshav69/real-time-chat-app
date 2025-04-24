@@ -10,6 +10,10 @@
     </body>
 </html> --}}
 <x-layouts.app.sidebar :title="$title ?? null">
+    @include('components.success-card')
+
+
 
     {{ $slot }}
+    @vite('resources/js/app.js')
 </x-layouts.app.sidebar>
