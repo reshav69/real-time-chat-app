@@ -8,7 +8,10 @@ use App\Models\User;
 use App\Events\MessageSentEvent;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
+use App\Services\NgramService;
+use Symfony\Component\Console\Completion\Suggestion;
 
+use function Laravel\Prompts\suggest;
 
 class ChatBox extends Component
 {
@@ -18,7 +21,7 @@ class ChatBox extends Component
     public $receiver;
     public $messages = [];
     public $message = '';
-    public $ev;
+    public $suggestions;
 
     public function mount($username)
     {
@@ -39,14 +42,14 @@ class ChatBox extends Component
            ->orderBy('created_at', 'asc')
            ->get();
 
-        //    dd($messages);
+
+        //    dd($this->message);
         foreach ($messages as $message) 
         {
             $this->appendChatMessage($message);
         }
         // dd($messages);
         $this->dispatch('scrollToBottom');
-
     }
 
     public function appendChatMessage($message)
@@ -62,6 +65,8 @@ class ChatBox extends Component
     }
 
     public function sendMessage(){
+        // dd($this->message);
+        if($this->message == '') return;
         $newMessage = PrivateMessage::create([
             'sender_id'=>$this->sender_id,
             'receiver_id'=>$this->receiver_id,
@@ -73,6 +78,31 @@ class ChatBox extends Component
 
         $this->message = '';
         $this->dispatch('scrollToBottom');
+    }
+
+
+    public function updatedMessage($value)
+    {
+
+        $newval = (explode(" ",strval($value)));
+        // dd($value);
+        // dd(count($newval) > 2);
+        if ($value && count($newval) >= 2) {
+            $ngramService = new NgramService();
+
+            $ngramService->setVocab();
+            $ngramService->generateBiTrigram();
+
+            $suggestions = $ngramService->suggestNext($value);
+            // dd($suggestions);
+            // dd( array_slice(array_column($suggestions,'word'),0,3));
+            $this->suggestions =array_slice(array_column($suggestions,'word'),0,3);
+            // $this->suggestions = $suggestions;
+            // dd($this->suggestions);
+        } else {
+            $this->suggestions = [];
+        }
+        // dd($this->suggestions);
     }
 
 

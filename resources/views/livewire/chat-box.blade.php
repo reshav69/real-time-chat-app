@@ -1,20 +1,3 @@
-{{-- 
-<div class="m-5 p-4 border rounded h-full">
-    
-    <h2 class="font-bold underline text-xl mb-4">
-        <a href="{{ route('profile.show',['username'=>$receiver->username]) }}">Peter</a>
-        <div class="fixed bottom-0">
-
-
-            <form action="" class="flex">
-                
-                <x-input type="text" name="message" placeholder="chatting message" class="w-full"/>
-                <button class="">send</button>
-            </form>
-        </div> 
-    </h2>
-
-</div> --}}
 <div class="m-5 p-4 rounded h-[86vh] flex flex-col relative shadow ">
 
     <!-- Chat Header -->
@@ -29,7 +12,7 @@
 
 
     <!-- Messages Scrollable Area -->
-    <div class="flex-1 overflow-y-auto space-y-2 pr-2 text-black" id="messages">
+    <div class="flex-1 overflow-y-auto space-y-2 pr-2 text-black mb-7" id="messages">
 
         @foreach ($messages as $msg)
         {{-- @dd($messages) --}}
@@ -56,20 +39,49 @@
 
 
     <!-- Message Input -->
-
-    <form wire:submit.prevent="sendMessage" class="mt-7 w-full flex items-center justify-between">
-        <x-input wire:model="message" name="message" type="text"
-         placeholder="Type your message..." class="min-w-[50vw] w-auto" autocomplete="off" list="chat"/>
-         <datalist id="chat">
-
-         </datalist>
+    
+    <form wire:submit.prevent="sendMessage" class="w-full flex items-center justify-between">
+        <x-input wire:model.live.debounce.400ms="message" id="message" name="message" type="text"
+        placeholder="Type your message..." class="min-w-[50vw] w-auto" autocomplete="off" list="chat"/>
+        
         <button type="submit" class="bg-indigo-600 text-white w-[100px] px-5 py-1 rounded hover:bg-indigo-700">Send</button>
+        @if ($suggestions)
+        <div class="absolute space-x-2 mb-25 rounded-full rounded shadow-md">
+                @foreach ($suggestions as $word)
+                    {{-- @dd($word) --}}
+                    <span data-word="{{ $word }}" class="cursor-pointer suggestion bg-gray-700 text-sm rounded-3xl p-2">
+                        {{ ($word) }}</span>
+    
+                @endforeach
+            </div>
+                @endif
     </form>
+
 
 </div>
 
 @script
 <script>
+
+
+    document.addEventListener('click', function (event) {
+            console.log("clicks");
+            const clickedElement = event.target;
+            // console.log(clickedElement);
+
+            if (clickedElement.classList.contains('suggestion')) {
+                // console.log("clicks on");
+                const word = clickedElement.getAttribute('data-word');
+                const input = document.getElementById('message');
+                // console.log
+
+                if (input) {
+                    const current = input.value.trim();
+                    input.value = current ? current + ' ' + word : word;
+                    input.dispatchEvent(new Event('input'));
+                }
+            }
+        });
 
 
     Livewire.on('scrollToBottom', () => {

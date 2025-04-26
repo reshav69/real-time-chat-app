@@ -25,9 +25,20 @@
                 <a href="/register" class="block py-2 px-4 hover:bg-gray-200 hover:text-gray-900 rounded">Register</a>
                 @endguest
                 @auth()
-                <a href="/dashboard" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Dashboard</a>
-                <a href="{{ route('friend.requests') }}" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Friend Requests</a>
-                
+                <div class=" space-y-5 mb-4">
+
+                    <a href="/dashboard" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Dashboard</a>
+                    <a href="{{ route('friend.requests') }}" class="border-sky-600 border block py-2 px-4 hover:bg-gray-800 hover:text-gray-300 rounded">Friend Requests</a>
+                </div>
+                <div class="p-4 h-[55vh] overflow-y-auto">
+                    <h2 class="text-lg flex font-semibold mb-4 border-indigo-500 border-b">Group List</h2>
+                    <div class="space-y-2 overflow-y-auto">
+                        <p>WORK TO BE DONE</p>
+ 
+                            
+                    </div>
+                </div>
+
                 <div class="fixed bottom-0 border-t w-48 mb-4">
                     <p class="mt-4 mb-4 font-bold underline">
                         <a href="{{ route('profile.show',['username'=>auth()->user()->username]) }}">
