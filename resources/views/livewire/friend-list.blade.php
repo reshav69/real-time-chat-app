@@ -10,7 +10,6 @@
                 <a href="{{ route('profile.show',['username'=>$friend->friend->username] )}}">
                     {{ $friend->friend->username }}</a>
 
-
             </div>
             <div>
                 <a href="{{ route('chat.show', ['username' => $friend->friend->username]) }}"

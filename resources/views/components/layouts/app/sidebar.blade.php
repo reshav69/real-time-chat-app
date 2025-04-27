@@ -35,7 +35,7 @@
                         <a href="{{ route('friend.requests') }}"
                         class="block px-4 py-2 border border-sky-600 rounded hover:bg-gray-800 hover:text-gray-300">
                         <i class="bi bi-person-lines-fill"></i> Friend Requests</a>
-                        <a href="{{ route('groups.create') }}"
+                        <a href="{{ route('groups.list') }}"
                         class="block px-4 py-2 border border-sky-600 rounded hover:bg-gray-800 hover:text-gray-300">
                         <i class="bi bi-people-fill"></i> Groups</a>
                     </div>
@@ -43,7 +43,17 @@
                     <div class="mt-6 h-[40vh] overflow-y-auto">
                         <h3 class="text-md font-semibold mb-2 border-b border-indigo-500">Group List</h3>
                         <div class="space-y-2">
-                            <p>WORK TO BE DONE</p>
+                            @forelse (auth()->user()->groups()->get() as $group)
+
+                                <a href="{{ route('groups.show',['group'=>$group->id]) }}"
+                                    class="flex p-1 rounded gap-3 bg-gray-700 hover:bg-gray-800">
+                                    <img src="{{ asset('storage/'.$group->icon) }}" alt="" width="40">
+                                    <p>{{$group->name}}</p>
+                                </a>
+
+                            @empty
+                                <p>No groups joined</p>
+                            @endforelse
                         </div>
                     </div>
 

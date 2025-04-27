@@ -5,6 +5,7 @@ namespace App\Livewire\Groups;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use App\Models\Group;
+use App\Models\GroupMember;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,7 @@ class CreateGroup extends Component
 {
     use WithFileUploads;
 
-    #[Validate('required|string|min:3|max:250')]
+    #[Validate('required|string|min:3|max:50')]
     public $name;
 
     #[Validate('nullable|string|max:1000')]
@@ -41,6 +42,13 @@ class CreateGroup extends Component
             'admin_id' => Auth::id(),
         ]);
         // dd($newgroup);
+        GroupMember::create([
+            'group_id' => $newgroup->id,
+            'user_id' => Auth::id(),
+            'role' => 'admin',
+            'created_at' => now(),
+        ]);
+
         $this->reset(['name', 'description', 'type', 'icon']);
 
         if(!$newgroup)

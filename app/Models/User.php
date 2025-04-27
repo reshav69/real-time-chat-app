@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -57,4 +57,9 @@ class User extends Authenticatable
         return $this->hasMany(Friend::class, 'friend_id');
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_members');
+
+    }
 }

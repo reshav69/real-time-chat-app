@@ -5,11 +5,17 @@ use App\Livewire\Register;
 use App\Livewire\Login;
 use App\Livewire\Dashboard;
 use App\Livewire\Logout;
+
 use App\Livewire\UserProfile;
 use App\Livewire\UserEdit;
+
 use App\Livewire\FriendRequestsPage;
 use App\Livewire\ChatBox;
+
 use App\Livewire\Groups\CreateGroup;
+use App\Livewire\Groups\EditGroup;
+use App\Livewire\Groups\GroupsList;
+use App\Livewire\Groups\ShowGroup;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,7 +35,10 @@ Route::group(['middleware'=>'auth'], function(){
 
     Route::get('/chat/{username}', ChatBox::class)->name('chat.show');
 
+    Route::get('/group/list',GroupsList::class)->name('groups.list');
     Route::get('/group/create',CreateGroup::class)->name('groups.create');
+    Route::get('/group/edit/{group}',EditGroup::class)->name('groups.edit');
+    Route::get('/group/{group}',ShowGroup::class)->name('groups.show');
 });
 // Route::get('/chat/{username}', function ($username) {
 //     $receiver = \App\Models\User::where('username', $username)->firstOrFail();
@@ -72,13 +81,17 @@ private messaging
 // GENERAL FIXES
     //online status
     //notify?
+    //better ui
 
 /*
 Creating groups
-    private groups
-    public groups
+    create groups --
+    list groups --
+    joining groups
     adding members
-    inviting
+    inviting members
+    seeing members
+    leaving groups
 */
 /*
 sending group messages
