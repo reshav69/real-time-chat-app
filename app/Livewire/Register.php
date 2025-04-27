@@ -40,6 +40,7 @@ class Register extends Component
 
     public function render()
     {
+        view()->share('title', 'Register');
         return view('livewire.auth.register');
     }
 

@@ -1,63 +1,75 @@
-<div class="m-5 p-4 rounded h-[86vh] flex flex-col relative shadow ">
-
+<div class="m-2 p-4 rounded-lg h-[86vh] flex flex-col relative shadow bg-white dark:bg-zinc-900">
+    
     <!-- Chat Header -->
-    <div class="border-b pb-2 mb-2 flex justify-between items-center">
-        <h2 class="font-bold text-xl">
-            <a href="{{ route('profile.show',['username'=>$receiver->username]) }}" class="text-indigo-600 hover:underline">
+    <div class="border-b pb-2 mb-4 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <img src="https://img.icons8.com/?size=256w&id=7tLWAgSNQXZ3&format=png" alt="avatar" class="w-10 h-10 rounded-full object-cover border border-indigo-500">
+            <a href="{{ route('profile.show', ['username' => $receiver->username]) }}" class="text-indigo-700 hover:underline text-2xl font-bold">
                 {{ $receiver->username }}
             </a>
-        </h2>
-        <span class="text-sm text-gray-500">Online</span>
+        </div>
+        <span class="text-sm text-green-500">Online</span>
     </div>
-
 
     <!-- Messages Scrollable Area -->
-    <div class="flex-1 overflow-y-auto space-y-2 pr-2 text-black mb-7" id="messages">
+    <div id="messages" class="flex-1 overflow-y-auto space-y-4 px-2 mb-20 text-black dark:text-white">
 
         @foreach ($messages as $msg)
-        {{-- @dd($messages) --}}
-            <div class="w-auto max-w-88  py-1 px-3 rounded-3xl border ml-5 mr-5
+            <div class="flex flex-col
+                {{ $msg['sender_id'] === auth()->id() ? 'items-end' : 'items-start' }}">
+                
+                <div class="max-w-[60%] px-4 py-2 rounded-xl shadow 
+                    {{ $msg['sender_id'] === auth()->id() ? 'bg-indigo-600 text-white' : 'bg-gray-200 dark:bg-gray-700' }}">
+                    <p class="break-words text-sm leading-relaxed">
+                        {{ $msg['message'] }}
+                    </p>
+                </div>
 
-                {{ $msg['sender_id'] === auth()->id() ? 'bg-indigo-600 text-white' : 'bg-gray-300' }}
-                {{ $msg['sender_id'] === auth()->id() ? 'ml-auto text-right' : 'mr-auto text-left' }}">
-    
-                {{-- Display message content --}}
-                <p class="mt-1 break-words">
-
-                    {{ $msg['message'] }}
-                </p>
-    
-                {{-- Optional: Display timestamp (created_at is available) --}}
-                <small class="mr-3 block text-xs
-                 {{ $msg['sender_id'] === auth()->id() ? 'text-blue-300 text-left' : 'text-right text-gray-500' }}">
-                  {{ \Carbon\Carbon::parse($msg['created_at'])->format('H:i') }}</small>
+                <small class="mt-1 text-xs text-gray-500 dark:text-gray-400 px-2">
+                    {{ \Carbon\Carbon::parse($msg['created_at'])->format('H:i') }}
+                </small>
             </div>
         @endforeach
+
     </div>
-    {{-- <div id="lastMessage"></div> --}}
 
-
-
-    <!-- Message Input -->
-    
-    <form wire:submit.prevent="sendMessage" class="w-full flex items-center justify-between">
-        <x-input wire:model.live.debounce.400ms="message" id="message" name="message" type="text"
-        placeholder="Type your message..." class="min-w-[50vw] w-auto" autocomplete="off" list="chat"/>
-        
-        <button type="submit" class="bg-indigo-600 text-white w-[100px] px-5 py-1 rounded hover:bg-indigo-700">Send</button>
+    <!-- Message Input + Suggestions -->
+    <form wire:submit.prevent="sendMessage"
+    class="absolute bottom-4 left-0 w-full px-6 flex items-center space-x-4">
+        <!-- Suggestions -->
         @if ($suggestions)
-        <div class="absolute space-x-2 mb-25 rounded-full rounded shadow-md">
-                @foreach ($suggestions as $word)
-                    {{-- @dd($word) --}}
-                    <span data-word="{{ $word }}" class="cursor-pointer suggestion bg-gray-700 text-sm rounded-3xl p-2">
-                        {{ ($word) }}</span>
-    
-                @endforeach
-            </div>
-                @endif
+        <div class="absolute top-10 left-0 flex flex-wrap gap-2 p-2 bg-white dark:bg-zinc-700 rounded-xl shadow-md z-20">
+            @foreach ($suggestions as $word)
+                <span
+                    data-word="{{ $word }}"
+                    class="cursor-pointer suggestion bg-gray-700 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
+                >
+                    {{ $word }}
+                </span>
+            @endforeach
+        </div>
+        @endif
+
+        <div class="relative flex-1">
+            <x-input
+                wire:model.live.debounce.400ms="message"
+                id="message"
+                name="message"
+                type="text"
+                placeholder="Type your message..."
+                class="w-full"
+                autocomplete="off"
+                list="chat"
+            />
+
+            
+        </div>
+
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-md">
+            <i class="bi bi-send"></i> Send
+        </button>
     </form>
-
-
+    
 </div>
 
 @script
@@ -86,7 +98,7 @@
 
     Livewire.on('scrollToBottom', () => {
         
-        let messagesDiv = document.querySelector('#messages');
+        let messagesDiv = document.getElementById('messages');
         setTimeout(() => {
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
             }, 50);

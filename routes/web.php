@@ -9,6 +9,8 @@ use App\Livewire\UserProfile;
 use App\Livewire\UserEdit;
 use App\Livewire\FriendRequestsPage;
 use App\Livewire\ChatBox;
+use App\Livewire\Groups\CreateGroup;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,6 +28,8 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/friendrequests', FriendRequestsPage::class)->name('friend.requests');
 
     Route::get('/chat/{username}', ChatBox::class)->name('chat.show');
+
+    Route::get('/group/create',CreateGroup::class)->name('groups.create');
 });
 // Route::get('/chat/{username}', function ($username) {
 //     $receiver = \App\Models\User::where('username', $username)->firstOrFail();
@@ -82,10 +86,10 @@ sending group messages
 
 /*
 next word suggestion
-    ngram
-    create algorithm
-    host algorithm
-    read from endpoint
-    apply on frontend
+    ngram --
+    create algorithm --
+    get dataset -
+    include in chat --
+    optimize
 
 */

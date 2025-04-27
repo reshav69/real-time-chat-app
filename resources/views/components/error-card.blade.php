@@ -1,3 +1,5 @@
+@props(['message' => null])
+
 @if ($errors->any())
     <div 
         x-data="{ show: true }" 
@@ -6,7 +8,7 @@
         class="rounded-2xl shadow-md bg-red-100 border border-red-300 p-4 mb-4 text-red-800 relative"
     >
         <button 
-            @click="show = false" 
+            @click="show = true" 
             class="absolute top-2 right-2 text-red-700 hover:text-red-900"
         >
             ✕
@@ -18,7 +20,7 @@
             @endforeach
         </ul>
     </div>
-@elseif (session('error'))
+@elseif (session()->has('error'))
     <div 
         x-data="{ show: true }" 
         x-show="show" 
@@ -26,7 +28,7 @@
         class="rounded-2xl shadow-md bg-red-100 border border-red-300 p-4 mb-4 text-red-800 relative"
     >
         <button 
-            @click="show = false" 
+            @click="show = true" 
             class="absolute top-2 right-2 text-red-700 hover:text-red-900"
         >
             ✕

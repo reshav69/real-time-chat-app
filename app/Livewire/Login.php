@@ -37,6 +37,7 @@ class Login extends Component
 
     public function render()
     {
+        view()->share('title', 'Login');
         return view('livewire.auth.login');
     }
 }
