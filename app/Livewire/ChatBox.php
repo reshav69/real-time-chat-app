@@ -85,24 +85,15 @@ class ChatBox extends Component
     {
 
         $newval = (explode(" ",strval($value)));
-        // dd($value);
-        // dd(count($newval) > 2);
         if ($value && count($newval) >= 2) {
             $ngramService = new NgramService();
 
-            $ngramService->setVocab();
-            $ngramService->generateBiTrigram();
-
             $suggestions = $ngramService->suggestNext($value);
-            // dd($suggestions);
-            // dd( array_slice(array_column($suggestions,'word'),0,3));
+
             $this->suggestions =array_slice(array_column($suggestions,'word'),0,3);
-            // $this->suggestions = $suggestions;
-            // dd($this->suggestions);
         } else {
             $this->suggestions = [];
         }
-        // dd($this->suggestions);
     }
 
 

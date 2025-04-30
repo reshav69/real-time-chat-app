@@ -1,133 +1,147 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Services;
+use Illuminate\Support\Facades\Storage;
 
-use Livewire\Component;
-use App\Models\FriendRequest as FR;
-use App\Models\Friend;
-class FriendRequest extends Component
+class NgramService
 {
-    public $receiver_id;
-    public $sender_id;
-    public $request_status = 'none';
-    public $request_exists = false;
+    public $corpus;
+    public $vocab = [];
+    public $bigramMap = [];
+    public $trigramMap = [];
 
-    public function mount($receiver_id)
+    public function __construct()
     {
-        $this->receiver_id = $receiver_id;
-        $this->sender_id = auth()->id();
-        $this->request_status = $this->checkFriendRequestStatus();
+        
+        $file = ('storage/ngram-input.txt');
+        // dd($file);
+        // $text = file_get_contents($file);
+        // $text .= "The girl bought a chocolate The boy ate the chocolate The girl bought a toy The girl played with the toy The girl is here The girl is going home";
+        // dd(str_word_count($text, 1));
+        // $this->corpus = explode(" ", strtolower($text));
+        
+        // $text = $this->textcleaner($text);
+        // $this->corpus = str_word_count(strtolower($text), 1);
+        // dd($this->corpus);
+        $this->loadLargeCorpus($file);
+        // dd(memory_get_usage(true) / 1024 / 1024 . " MB");
+        
     }
 
+    public function textcleaner($text){
+        $text = preg_replace('/<[^>]+>/', '', $text);
+        $text = preg_replace('/[^\w\s]/u', '', $text);
 
-    public function getRequest(){
-        $req =  FR::where(function ($query) {
-            $query->where('sender_id', $this->sender_id)
-                  ->where('receiver_id', $this->receiver_id);
-        })->orWhere(function ($query) {
-            $query->where('sender_id', $this->receiver_id)
-                  ->where('receiver_id', $this->sender_id);
-        })->first();
-        if(!$req)
-            return 1;
-        return $req;
+        $text = strtolower($text);
+    
+        return trim($text);
     }
 
-    public function requestExist(){
-        $this->request_exists = true;
-    }
+    public function loadLargeCorpus($filePath)
+    {
+        $handle = fopen($filePath, "r");
 
-    public function checkFriendRequestStatus(){
-        //if req exist, sender = auth -> sent
-        $request = $this->getRequest();
-        // dd($request);
+        if ($handle) {
+            while (($line = fgets($handle)) !== false) {
+                $cleanedLine = $this->textcleaner($line);
 
-        if($this->request_exists && $request->sender_id === $this->sender_id ){
-            return 'sent';
+                $words = str_word_count($cleanedLine, 1);
+
+                foreach ($words as $word) {
+                    $this->corpus[] = $word;
+                }
+            }
+            fclose($handle);
+        } else {
+            throw new \Exception("Could not open file: $filePath");
         }
-        //if req exist, receiver = auth -> receiver
-        if($this->request_exists && $request->sender_id === $this->receiver_id){
-            return 'received';
-        }
-        return 'none';
-    }
-
-    public function sendRequest(){
-        if($this->request_exists){
-            session()->flash('error', 'Friend request already exists.');
-            return;
-        }
-
-        FR::create([
-            'sender_id' => $this->sender_id,
-            'receiver_id' => $this->receiver_id,
-            'status' => 'pending',
-        ]);
-        $this->request_status = 'sent';
-        session()->flash('success', 'Friend request sent!');
     }
 
 
-    public function cancelRequest(){
-        if($this->request_exists){
-            $request = FR::where('sender_id', $this->sender_id)
-                ->where('receiver_id', $this->receiver_id)
-                ->first();
+    public function setVocab()
+    {
+        $this->vocab = array_unique($this->corpus);
+        // foreach ($this->corpus as $word) {
+        //     if (!isset($this->vocab[$word])) {
+        //         $this->vocab[] = $word;
+        //     }
+        //     if (!in_array($word, $this->vocab)) {
+        //         $this->vocab[] = $word;
+        //     }
+        // }
+    }
+
+    public function generateBiTrigram()
+    {
+        for ($i = 0; $i < count($this->corpus); $i++) {
+            if ($i < count($this->corpus) - 1) {
+                $bigram = $this->corpus[$i] . ' ' . $this->corpus[$i + 1];
+                $this->bigramMap[$bigram] = ($this->bigramMap[$bigram] ?? 0) + 1;
+            }
+            if ($i < count($this->corpus) - 2) {
+                $trigram = $this->corpus[$i] . ' ' . $this->corpus[$i + 1] . ' ' . $this->corpus[$i + 2];
+                $this->trigramMap[$trigram] = ($this->trigramMap[$trigram] ?? 0) + 1;
+            }
+        }
+        // for ($i = 0; $i < count($this->corpus) - 1; $i++) {
+        //     $bigram = $this->corpus[$i] . ' ' . $this->corpus[$i + 1];
+        //     $this->bigramMap[$bigram] = isset($this->bigramMap[$bigram]) ? $this->bigramMap[$bigram] + 1 : 1;
+        // }
+
+        // for ($i = 0; $i < count($this->corpus) - 2; $i++) {
+        //     $trigram = $this->corpus[$i] . ' ' . $this->corpus[$i + 1] . ' ' . $this->corpus[$i + 2];
+        //     $this->trigramMap[$trigram] = isset($this->trigramMap[$trigram]) ? $this->trigramMap[$trigram] + 1 : 1;
+        // }
+    }
+
+    public function suggestNext($input)
+    {
+        // dump(strlen($input));
+        // if(strlen($input) <= 2) return;
+        $inputTokens = explode(" ", strtolower(trim($input)));
+        // dd($inputTokens);
+        if (count($inputTokens) < 2) {
+            return []; 
+        }
+        $lastWord1 = $inputTokens[count($inputTokens) - 2];
+        $lastWord2 = $inputTokens[count($inputTokens) - 1];
+
+        $vocabProbabilities = [];
+        foreach ($this->vocab as $vocString) {
+            $testTrigram = $lastWord1 . ' ' . $lastWord2 . ' ' . $vocString;
+            $testBigram = $lastWord1 . ' ' . $lastWord2;
+
+            $testTrigramCount = isset($this->trigramMap[$testTrigram]) ? $this->trigramMap[$testTrigram] : 0;
+            $testBigramCount = isset($this->bigramMap[$testBigram]) ? $this->bigramMap[$testBigram] : 0;
+
+            //using backoff
+            // if ($testTrigramCount > 0) {
+            //     $score = $testTrigramCount;
+            // } elseif ($testBigramCount > 0) {
+            //     $score = 0.7 * $testBigramCount;
+            // } else {
+            //     $score = 0.1; 
+            // }
             
-                $request->delete();
-                $this->request_status = 'none';
+            // $vocabProbabilities[] = [
+            //     'word' => $vocString,
+            //     'probability' => $score
+            // ];
 
-                session()->flash('success', 'Friend request canceled.');
-            return;
+            // without using backoff
+            $probability = ($testBigramCount != 0) ? ($testTrigramCount / $testBigramCount) : 0.0;
+
+            $probability = ($testBigramCount != 0) ?
+                         (($testTrigramCount + 1) / ($testBigramCount + count($this->vocab)))
+                        : 0.0;
+
+            $vocabProbabilities[] = ['word' => $vocString, 'probability' => $probability];
         }
-        session()->flash('error', 'friend request cancel failed.');
-    }
+        usort($vocabProbabilities, fn($a, $b) => $b['probability'] <=> $a['probability']);
 
-
-    //accept
-    public function acceptRequest($requestId){
-        $request = FR::find('request_id');
-        if($request && $request->receiver_id === auth()->id()){
-            Friend::create([
-                'user_id'=>$request->sender_id,
-                'friend_id'=>$request->receiver_id
-            ]);
-
-            Friend::create([
-                'user_id' => $request->receiver_id,
-                'friend_id' => $request->sender_id,
-            ]);
-            $request->delete();
-            session()->flash('success', 'Friend request accepted.');
-        }
-
-    }
-    //reject
-    public function rejectRequest($requestId){
-        $request = FR::find($requestId);
-
-        if ($request && $request->receiver_id === auth()->id()) {
-            $request->delete();
-            session()->flash('success', 'Friend request rejected.');
-        }
-    }
-    //unfriend
-    public function unfriend($friendId){
-        Friend::where(function ($query) use ($friendId) {
-            $query->where('user_id', auth()->id())
-                ->where('friend_id', $friendId);
-        })->orWhere(function ($query) use ($friendId) {
-            $query->where('user_id', $friendId)
-                ->where('friend_id', auth()->id());
-        })->delete();
-
-        session()->flash('success', 'Unfriended successfully.');
-    }
-
-
-
-    public function render()
-    {
-        return view('livewire.friend-request');
+        // dd(array_slice(array_column($vocabProbabilities,'word'), 0, 3));
+        // dd(array_slice(($vocabProbabilities), 0, 3));
+        return (array_slice(($vocabProbabilities), 0, 3));
+        // return array_slice(array_column($vocabProbabilities,'word'), 0, 3);
     }
 }

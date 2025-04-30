@@ -1,7 +1,7 @@
 <div>
 
     <x-input type="text" name="search" wire:model.live.debounce.300ms="search"
-    placeholder="Search" class="w-full" autocomplete="off"/>
+    placeholder="Search" class="w-full" autocomplete="off" />
 
     <div class="mt-1">
         @if ($search!='')

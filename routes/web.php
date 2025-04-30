@@ -87,11 +87,12 @@ private messaging
 Creating groups
     create groups --
     list groups --
-    joining groups
-    adding members
+    joining groups -- 
+    seeing members -- 
+    leaving groups --
     inviting members
-    seeing members
-    leaving groups
+    kicking members
+    assigning admins
 */
 /*
 sending group messages
