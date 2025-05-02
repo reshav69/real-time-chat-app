@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
 
     <title>{{ $title ?? 'Page Title' }}</title>
 
@@ -58,11 +59,17 @@
                     </div>
 
                     <div class="pt-4 border-t border-indigo-500 bottom-0">
-                        <p class="font-bold underline my-2">
-                            <a href="{{ route('profile.show', ['username' => auth()->user()->username]) }}">
-                                {{ auth()->user()->username }}
-                            </a>
-                        </p>
+
+                        <a href="{{ route('profile.show', ['username' => auth()->user()->username]) }}"
+                            class="bg-slate-800 p-2 w-full rounded-xl block mb-4 hover:bg-gray-900 flex justify-between">
+                            {{-- <x-image-with-default :src="auth()->user()->profile_image" class="w-10 h-10 rounded-full" /> --}}
+                            @if (auth()->user()->profile_image)
+                            <img src="{{ asset('storage/'.auth()->user()->profile_image) }}" alt="" srcset="" width="28px">
+                            @else
+                            <img src="{{ asset('storage/user-pics/default.png') }}" width="28px" alt="" srcset="">
+                            @endif
+                            {{ auth()->user()->username }}
+                        </a>
                         <a href="/logout" class="block w-full py-1 text-center border border-sky-600 rounded hover:bg-red-500">
                             <i class="bi bi-box-arrow-right"> Logout</i>
                         </a>

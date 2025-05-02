@@ -41,8 +41,7 @@ class EditGroup extends Component
         $this->name = $group->name;
         $this->description = $group->description;
         $this->type = $group->type;
-        // Note: We don't initialize a public property with the existing icon path.
-        // We'll handle updating the 'icon' column when a *new* file is uploaded.
+
     }
 
     public function updateGroup()

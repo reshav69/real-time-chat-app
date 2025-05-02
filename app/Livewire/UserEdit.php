@@ -6,9 +6,12 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage; 
 class UserEdit extends Component
 {
+    use WithFileUploads;
+
     public $username;
     public $email;
     public $password;
@@ -23,7 +26,7 @@ class UserEdit extends Component
         $this->username = $user->username;
         $this->email = $user->email;
         $this->bio = $user->bio;
-        // $this->profile_image = $user->profile_image;
+        $this->profile_image = $user->profile_image;
 
     }
     public function updateProfile()
@@ -32,17 +35,23 @@ class UserEdit extends Component
             'username' => 'required|string|min:3|max:50|unique:users,username,' . Auth::id(),
             'email' => 'required|email|unique:users,email,' . Auth::id(),
             'bio' => 'nullable|string|max:500',
-            // 'new_profile_image' => 'nullable|image|max:2048',
+            'new_profile_image' => 'nullable|image|max:2048',
             'password' => 'nullable|min:6|confirmed',
         ]);
-
         $user = Auth::user();
 
-        // if ($this->new_profile_image) {
-        //     // Store the new image
-        //     $imagePath = $this->new_profile_image->store('profile_images', 'public');
-        //     $user->profile_image = $imagePath;
-        // }
+
+
+        if ($this->new_profile_image) {
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+
+            $imagePath = $this->new_profile_image->store('user-pics', 'public');
+
+            $user->profile_image = $imagePath;
+        }
+
         $user->username = $this->username;
         $user->email = $this->email;
         $user->bio = $this->bio;
@@ -52,9 +61,26 @@ class UserEdit extends Component
         }
 
         $user->save();
+        $this->profile_image = $user->profile_image;
+        $this->new_profile_image = null;
 
         session()->flash('message', 'Profile updated successfully!');
     }
+
+    public function removeProfileImage()
+    {
+        $user = Auth::user();
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
+
+            $user->profile_image = null;
+            $user->save();
+            $this->profile_image = null;
+
+            session()->flash('message', 'Profile image removed successfully!');
+        }
+    }
+
 
     public function render()
     {

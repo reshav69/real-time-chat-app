@@ -6,10 +6,10 @@
     </div>
     <hr class="w-[70%] mx-auto ">
 
-    <div class="m-5 p-4 bg-neutral-700 rounded-xl flex items-center">
+    <div class="m-5 p-4 bg-neutral-800 rounded-xl flex">
 
-        <div class="border h-fit min-w-[200px] flex">
-            <img src="" alt="" width="200">
+        <div class="h-fit min-w-[200px] flex">
+            <img src="{{ $user->profile_image_url }}" alt="" width="200">
 
         </div>
         <div class="w-full">

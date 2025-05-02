@@ -29,4 +29,9 @@
     @empty
         <p>No sent requests.</p>
     @endforelse
+        <hr class="m-5">
+    <div>
+        <livewire:groups.group-invitation-page/>
+
+    </div>
 </div>

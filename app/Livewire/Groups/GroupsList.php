@@ -12,10 +12,12 @@ class GroupsList extends Component
 {
     public $myGroups;
     public $joined_groups = [];
+    public $public_groups = [];
     public function mount(){
         $this->myGroups = Group::where('admin_id',Auth::id())->get();
 
         $this->joined_groups = Auth::user()->groups()->get();
+        $this->public_groups = Group::where('type', 'public')->get();
 
     }
     public function render()

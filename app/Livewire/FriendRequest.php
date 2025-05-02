@@ -13,6 +13,7 @@ class FriendRequest extends Component
     public $request_status = '';
     public $requestId;
     public $receiveruname;
+    
     public function mount($receiver_id,$requestId = null){
         $this->sender_id = auth()->id();
         $this->receiver_id = $receiver_id;

@@ -11,8 +11,9 @@
         <span class="text-sm text-green-500">Online</span>
     </div>
 
+
     <!-- Messages Scrollable Area -->
-    <div id="messages" class="flex-1 overflow-y-auto space-y-4 px-2 mb-20 text-black dark:text-white">
+    <div id="messages" class="flex-1 overflow-y-auto space-y-4 px-2 mb-10 text-black dark:text-white">
 
         @foreach ($messages as $msg)
             <div class="flex flex-col
@@ -32,43 +33,10 @@
         @endforeach
 
     </div>
-
+    
     <!-- Message Input + Suggestions -->
-    <form wire:submit.prevent="sendMessage"
-    class="absolute bottom-4 left-0 w-full px-6 flex items-center space-x-4">
-        <!-- Suggestions -->
-        @if ($suggestions)
-        <div class="absolute top-10 left-0 flex flex-wrap gap-2 p-2 bg-white dark:bg-zinc-700 rounded-xl shadow-md z-20">
-            @foreach ($suggestions as $word)
-                <span
-                    data-word="{{ $word }}"
-                    class="cursor-pointer suggestion bg-gray-700 text-white text-xs px-3 py-1 rounded-full hover:bg-indigo-600 transition"
-                >
-                    {{ $word }}
-                </span>
-            @endforeach
-        </div>
-        @endif
+        <livewire:chat-input />
 
-        <div class="relative flex-1">
-            <x-input
-                wire:model.live.debounce.400ms="message"
-                id="message"
-                name="message"
-                type="text"
-                placeholder="Type your message..."
-                class="w-full"
-                autocomplete="off"
-                list="chat"
-            />
-
-            
-        </div>
-
-        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-md">
-            <i class="bi bi-send"></i> Send
-        </button>
-    </form>
     
 </div>
 

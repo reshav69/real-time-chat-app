@@ -14,6 +14,7 @@ class UserProfile extends Component
     }
     public function render()
     {
+        view()->share('title', $this->user->username.'\'s profile');
         return view('livewire.user-profile');
     }
 }

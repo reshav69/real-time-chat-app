@@ -80,15 +80,22 @@ class NgramService
             $testBigramCount = $this->bigramMap[$testBigram] ?? 0;
 
             // Add-1 Smoothing
-            $probability = ($testBigramCount != 0) 
-                ? (($testTrigramCount + 1) / ($testBigramCount + count($this->vocab)))
-                : 0.0;
+            $probability = 0.0;
+            $probability = ($testTrigramCount + 1) / ($testBigramCount + count($this->vocab));
 
             $vocabProbabilities[] = ['word' => $vocString, 'probability' => $probability];
         }
+        $baseProbability = 1.0 / count($this->vocab);
 
-        usort($vocabProbabilities, fn($a, $b) => $b['probability'] <=> $a['probability']);
-        return array_slice($vocabProbabilities, 0, 3);
+        $relevantSuggestions = array_filter($vocabProbabilities, function($suggestion) use ($baseProbability) {
+            return $suggestion['probability'] > $baseProbability;
+        });
+
+        usort($relevantSuggestions, fn($a, $b) => $b['probability'] <=> $a['probability']);
+        // dd($relevantSuggestions);
+        return array_slice($relevantSuggestions,0,7);
+        // usort($vocabProbabilities, fn($a, $b) => $b['probability'] <=> $a['probability']);
+        // return array_slice($vocabProbabilities, 0, 3);
     }
 
 }

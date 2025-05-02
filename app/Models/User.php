@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -62,4 +64,28 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'group_members');
 
     }
+
+    public function sentGroupInvitations()
+    {
+        // 'invited_by_user_id'
+        return $this->hasMany(GroupInvitation::class, 'invited_by_user_id');
+    }
+
+    public function receivedGroupInvitations()
+    {
+        //'invited_user_id'
+        return $this->hasMany(GroupInvitation::class, 'invited_user_id');
+    }
+
+    public function getProfileImageUrlAttribute(): string
+    {
+        if ($this->profile_image) {
+            // dd($this->profile_image);
+            return asset('storage/'.$this->profile_image); 
+            // return Storage::disk('public')->url($this->profile_image);
+        }
+
+        return asset('storage/user-pics/default.png'); 
+    }
+
 }

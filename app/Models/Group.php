@@ -28,4 +28,9 @@ class Group extends Model
         return $this->hasMany(GroupMember::class, 'group_id');
     }
 
+    public function invitations()
+    {
+        return $this->hasMany(GroupInvitation::class, 'group_id');
+    }
+
 }

@@ -12,7 +12,12 @@ class ShowGroup extends Component
     public Group $group;
     public $isMember;
     public $isAdmin = false;
+    public $showInviteForm = false;
 
+    protected $listeners = [
+        'invitationSent' => 'hideInviteForm',
+        'cancelInvitation' => 'hideInviteForm',
+    ];
 
     public function mount(Group $group){
         $this->group = $group->load('members.user');
@@ -96,6 +101,18 @@ class ShowGroup extends Component
 
         // return r
 
+    }
+
+
+    public function toggleInviteForm()
+    {
+        $this->showInviteForm = !$this->showInviteForm;
+    }
+
+    public function hideInviteForm()
+    {
+        $this->showInviteForm = false;
+        // $this->group->load('invitations.invitedUser'); // Reload invitations relationship
     }
     public function render()
     {
