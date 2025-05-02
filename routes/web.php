@@ -14,6 +14,7 @@ use App\Livewire\ChatBox;
 
 use App\Livewire\Groups\CreateGroup;
 use App\Livewire\Groups\EditGroup;
+use App\Livewire\Groups\GroupChatBox;
 use App\Livewire\Groups\GroupsList;
 use App\Livewire\Groups\ShowGroup;
 
@@ -39,6 +40,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/group/create',CreateGroup::class)->name('groups.create');
     Route::get('/group/edit/{group}',EditGroup::class)->name('groups.edit');
     Route::get('/group/{group}',ShowGroup::class)->name('groups.show');
+    Route::get('/group/chat/{group}', GroupChatBox::class)->name('groups.chat');
 });
 // Route::get('/chat/{username}', function ($username) {
 //     $receiver = \App\Models\User::where('username', $username)->firstOrFail();
@@ -90,12 +92,15 @@ Creating groups
     joining groups -- 
     seeing members -- 
     leaving groups --
-    inviting members
+    inviting members --
     kicking members
     assigning admins
 */
 /*
 sending group messages
+    make event --
+    make chatbox
+    send message
 */
 
 /*

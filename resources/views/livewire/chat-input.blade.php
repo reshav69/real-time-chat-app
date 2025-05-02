@@ -39,5 +39,33 @@
             input.setSelectionRange(input.value.length, input.value.length);
         }
     });
+    document.addEventListener('click', function (event) {
+            console.log("clicks");
+            const clickedElement = event.target;
+            // console.log(clickedElement);
+
+            if (clickedElement.classList.contains('suggestion')) {
+                // console.log("clicks on");
+                const word = clickedElement.getAttribute('data-word');
+                const input = document.getElementById('message');
+                // console.log
+
+                if (input) {
+                    const current = input.value.trim();
+                    input.value = current ? current + ' ' + word : word;
+                    input.dispatchEvent(new Event('input'));
+                }
+            }
+        });
+
+
+    Livewire.on('scrollToBottom', () => {
+        
+        let messagesDiv = document.getElementById('messages');
+        setTimeout(() => {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 50);
+        // messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    })
 </script>
 @endscript

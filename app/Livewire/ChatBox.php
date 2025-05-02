@@ -68,7 +68,15 @@ class ChatBox extends Component
         // ];
     }
 
-    #[On('messageSubmitted')]
+    public function getListeners(){
+        $channel = 'echo-private:chat-channel.' . $this->sender_id . ',MessageSentEvent';
+        return[
+            'messageSubmitted'=>'sendMessage',
+            $channel=>'listenForMessage',
+        ];
+    }
+
+    // #[On('messageSubmitted')]
     public function sendMessage($messageContent){
         // dd($this->message);
         if($messageContent == '') return;
@@ -89,15 +97,15 @@ class ChatBox extends Component
 
 
 
-    #[On('echo-private:chat-channel.{sender_id},MessageSentEvent')]
+    // #[On('echo-private:chat-channel.{sender_id},MessageSentEvent')]
     // #[On('MessageSentEvent')]
     public function listenForMessage($event)
     {
+        logger('message broadcast listener method called', $event);
 
         $chatMessage = PrivateMessage::whereId($event['message']['id'])
             ->with('sender', 'receiver')->get()
             ->first();
-
         $this->appendChatMessage($chatMessage);
         $this->dispatch('scrollToBottom');
     }

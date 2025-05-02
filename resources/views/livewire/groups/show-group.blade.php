@@ -8,7 +8,7 @@
             @if ($isMember)
             <div>
 
-                <a class="p-2 bg-sky-600 rounded mr-3">Chat</a>
+                <a href="{{ route('groups.chat',['group'=>$group->id]) }}" class="p-2 bg-sky-600 rounded mr-3">Chat</a>
                     
                 <button wire:click="toggleInviteForm" class="bg-green-600 hover:bg-green-700 p-2 rounded">
                     <i class="bi bi-plus-circle-dotted"></i> Invite Members
