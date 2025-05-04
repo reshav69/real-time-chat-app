@@ -35,20 +35,23 @@
                         Dashboard</a>
                         <a href="{{ route('friend.requests') }}"
                         class="block px-4 py-2 border border-sky-600 rounded hover:bg-gray-800 hover:text-gray-300">
-                        <i class="bi bi-person-lines-fill"></i> Friend Requests</a>
+                        <i class="bi bi-person-lines-fill"></i> Requests & Invites</a>
                         <a href="{{ route('groups.list') }}"
                         class="block px-4 py-2 border border-sky-600 rounded hover:bg-gray-800 hover:text-gray-300">
                         <i class="bi bi-people-fill"></i> Groups</a>
                     </div>
 
-                    <div class="mt-6 h-[40vh] overflow-y-auto">
+                    <div class="mt-6 min-h-[40vh] max-h-[42vh] overflow-y-auto">
                         <h3 class="text-md font-semibold mb-2 border-b border-indigo-500">Group List</h3>
                         <div class="space-y-2">
                             @forelse (auth()->user()->groups()->get() as $group)
 
                                 <a href="{{ route('groups.show',['group'=>$group->id]) }}"
-                                    class="flex p-1 rounded gap-3 bg-gray-700 hover:bg-gray-800">
-                                    <img src="{{ asset('storage/'.$group->icon) }}" alt="" width="40">
+                                    class="flex p-1 w-full h-10 rounded gap-3 bg-slate-800 hover:bg-gray-700">
+
+                                    <img src="{{ $group->icon_url }}" alt="" class="object-contain w-10">
+
+                                    {{-- <img src="{{ asset('storage/'.$group->icon) }}" alt="" width="40"> --}}
                                     <p>{{$group->name}}</p>
                                 </a>
 
@@ -58,7 +61,7 @@
                         </div>
                     </div>
 
-                    <div class="pt-4 border-t border-indigo-500 bottom-0">
+                    <div class="pt-4 border-t border-indigo-500">
 
                         <a href="{{ route('profile.show', ['username' => auth()->user()->username]) }}"
                             class="bg-slate-800 p-2 w-full rounded-xl block mb-4 hover:bg-gray-900 flex justify-between">
@@ -106,8 +109,11 @@
 
             <div class="p-4 h-[calc(50vh-64px)] overflow-y-auto border-t border-indigo-500">
                 <h2 class="text-lg font-bold mb-4 border-b border-indigo-500">Recent Chats</h2>
+                @if (session()->has('error'))
+                <x-error-card/>
+                @endif
                 <nav class="space-y-2">
-                    WORK TO BE DONE
+                    <livewire:recent-chats />
                 </nav>
             </div>
         @endauth

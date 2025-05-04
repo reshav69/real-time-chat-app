@@ -20,11 +20,10 @@
         <hr class="m-5 text-gray-500">
         <div class="flex bg-neutral-800 p-2 rounded-2xl shadow">
             <div>
-                @if ($group->icon)
-                    <img src="{{ asset('storage/' . $group->icon) }}" 
+                    <img src="{{ $group->icon_url }}" 
                          alt="{{ $group->name }} Icon" 
                          class="w-46 h-46 object-cover rounded-full mb-4">
-                @endif
+
 
                 <div class="text-sm space-y-1">
                     <p>Type: <span class="capitalize font-bold">{{ $group->type }}</span></p>

@@ -17,7 +17,7 @@ class GroupsList extends Component
         $this->myGroups = Group::where('admin_id',Auth::id())->get();
 
         $this->joined_groups = Auth::user()->groups()->get();
-        $this->public_groups = Group::where('type', 'public')->get();
+        $this->public_groups = Group::where('type', 'public')->inRandomOrder()->limit(5)->get();
 
     }
     public function render()

@@ -12,7 +12,7 @@
         @forelse ($myGroups as $group)
             <div class="flex justify-between items-center rounded-xl p-3 mb-3 bg-zinc-800 hover:outline outline-gray-500">
                 <div class="flex items-center gap-4">
-                    <img src="{{ asset('storage/' . $group->icon) }}" alt="Group Icon"
+                    <img src="{{ $group->icon_url }}" alt="Group Icon"
                          class="w-12 h-12 rounded-full object-cover">
                     <a href="{{ route('groups.show', ['group' => $group->id]) }}"
                        class="text-lg font-semibold text-indigo-400 hover:underline">
@@ -35,7 +35,7 @@
         @forelse ($joined_groups as $group)
             <div class="flex justify-between items-center rounded-xl p-3 mb-3 bg-zinc-800 hover:outline outline-gray-500">
                 <div class="flex items-center gap-4">
-                    <img src="{{ asset('storage/' . $group->icon) }}" alt="Group Icon"
+                    <img src="{{ $group->icon_url }}" alt="Group Icon"
                          class="w-12 h-12 rounded-full object-cover">
                     <a href="{{ route('groups.show', ['group' => $group->id]) }}"
                        class="text-lg font-semibold text-indigo-400 hover:underline">
@@ -57,7 +57,7 @@
             @forelse ($public_groups as $group)
                 <div class="w-48 flex-shrink-0 bg-zinc-800 border border-gray-700 rounded-xl shadow-md p-3 hover:bg-zinc-700 transition">
                     <div class="w-full h-32 overflow-hidden rounded-xl">
-                        <img src="{{ asset('storage/' . $group->icon) }}" alt="{{ $group->name }}" 
+                        <img src="{{ $group->icon_url }}" alt="{{ $group->name }}" 
                             class="w-full h-full object-cover">
                     </div>
                     

@@ -40,6 +40,8 @@ class ChatBox extends Component
            ->orderBy('created_at', 'asc')
            ->get();
 
+        //    dd($messages);
+
 
         //    dd($this->message);
         foreach ($messages as $message) 
@@ -53,19 +55,20 @@ class ChatBox extends Component
     public function appendChatMessage($messageData)
     {
         if ($messageData instanceof PrivateMessage) {
-            $this->messages[] = $messageData->toArray();
+            // $this->messages[] = $messageData->toArray();
+            $this->messages[] = [
+                'id' => $messageData->id,
+                'sender_id' => $messageData->sender->id,
+                'receiver_id' => $messageData->receiver->id,
+                'message' => $messageData->message,
+                'created_at'=>$messageData->created_at,
+                'updated_at'=>$messageData->updated_at
+            ];
         } else {
              $this->messages[] = $messageData;
         }
 
-        // $this->messages[] = [
-        //     'id' => $message->id,
-        //     'sender_id' => $message->sender->id,
-        //     'receiver_id' => $message->receiver->id,
-        //     'message' => $message->message,
-        //     'created_at'=>$message->created_at,
-        //     'updated_at'=>$message->updated_at
-        // ];
+
     }
 
     public function getListeners(){
@@ -92,6 +95,7 @@ class ChatBox extends Component
 
         $this->dispatch('clearInput');
         $this->dispatch('scrollToBottom');
+        $this->dispatch('messageupdates');
     }
 
 
@@ -103,11 +107,14 @@ class ChatBox extends Component
     {
         logger('message broadcast listener method called', $event);
 
-        $chatMessage = PrivateMessage::whereId($event['message']['id'])
-            ->with('sender', 'receiver')->get()
-            ->first();
+        // dd($event);
+        $chatMessage = $event['message'];
+        // $chatMessage = PrivateMessage::whereId($event['message']['id'])
+        //     ->with('sender', 'receiver')->get()
+        //     ->first();
         $this->appendChatMessage($chatMessage);
         $this->dispatch('scrollToBottom');
+        $this->dispatch('messageupdates');
     }
 
     public function render()

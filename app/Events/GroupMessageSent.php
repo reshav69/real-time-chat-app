@@ -50,20 +50,20 @@ class GroupMessageSent implements ShouldBroadcastNow
      *
      * @return array
      */
-    // public function broadcastWith(): array
-    // {
+    public function broadcastWith(): array
+    {
 
-    //     return [
-    //         'id' => $this->groupMessage->id,
-    //         'group_id' => $this->groupMessage->group_id,
-    //         'sender_id' => $this->groupMessage->sender_id,
-    //         'message' => $this->groupMessage->message,
-    //         'created_at' => $this->groupMessage->created_at->toIso8601String(),
-    //         'user' => [
-    //             'id' => $this->groupMessage->sender->id,
-    //             'username' => $this->groupMessage->sender->username,
-    //             'profile_image_url' => $this->groupMessage->sender->profile_image_url, 
-    //         ],
-    //     ];
-    // }
+        return [
+            'id' => $this->groupMessage->id,
+            'group_id' => $this->groupMessage->group_id,
+            'sender_id' => $this->groupMessage->sender_id,
+            'message' => $this->groupMessage->message,
+            'created_at' => $this->groupMessage->created_at->toIso8601String(),
+            'sender' => [
+                'id' => $this->groupMessage->sender->id,
+                'username' => $this->groupMessage->sender->username,
+                'profile_image_url' => $this->groupMessage->sender->profile_image_url, 
+            ],
+        ];
+    }
 }

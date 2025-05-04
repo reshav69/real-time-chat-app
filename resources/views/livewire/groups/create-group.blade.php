@@ -46,11 +46,6 @@
             @error('icon') <span style="color: red;">{{ $message }}</span> @enderror
         </div>
 
-        @if (session()->has('sucecess'))
-            <div class="mb-4 text-sm text-red-600 dark:text-red-400 text-center">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <div class="flex items-center justify-center">
             <button 
@@ -59,6 +54,11 @@
             >
                 Create
             </button>
+            @if (session()->has('success'))
+            <div class="mb-4 text-sm text-red-600 dark:text-red-400 text-center">
+                {{ session('success') }}
+            </div>
+        @endif
         </div>
     </form>
 </div>

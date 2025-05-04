@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 class NgramService
 {
     public $vocab = [];
+    public $vocabcount = 0;
     public $bigramMap = [];
     public $trigramMap = [];
     public $nextWordsMap = [];
@@ -39,6 +40,7 @@ class NgramService
 
                 for ($i = 0; $i < $countWords; $i++) {
                     $this->vocab[$words[$i]] = true;
+                    
 
                     if ($i < $countWords - 1) {
                         $bigram = $words[$i] . ' ' . $words[$i + 1];
@@ -57,6 +59,8 @@ class NgramService
             fclose($handle);
 
             $this->vocab = array_keys($this->vocab);
+            $this->vocabcount = count($this->vocab);
+            
         } else {
             throw new \Exception("Could not open file: $filePath");
         }
@@ -73,24 +77,40 @@ class NgramService
         $lastWord2 = $inputTokens[count($inputTokens) - 1];
         $testBigram = $lastWord1 . ' ' . $lastWord2;
 
+        $minFrequency = 3;
+
         $vocabProbabilities = [];
         foreach ($this->vocab as $vocString) {
             $testTrigram = $lastWord1 . ' ' . $lastWord2 . ' ' . $vocString;
             $testTrigramCount = $this->trigramMap[$testTrigram] ?? 0;
             $testBigramCount = $this->bigramMap[$testBigram] ?? 0;
 
+
+            // check if trigram found
+            // if ($testTrigramCount >= $minFrequency) {
+            //     $probability = ($testTrigramCount + 1) / ($testBigramCount + count($this->vocab));
+            //     $vocabProbabilities[] = ['word' => $vocString, 'probability' => $probability];
+            //     break;
+            // }
+
+            // backoff strategy
+            // if ($testTrigramCount > 0) {
+            //     $probability = ($testTrigramCount + 1) / ($testBigramCount + count($this->vocab));
+            // } else{ 
+            //     $probability = ($testBigramCount + 1) / (array_sum($this->bigramMap) + count($this->vocab));
+            // }
+
             // Add-1 Smoothing
             $probability = 0.0;
-            $probability = ($testTrigramCount + 1) / ($testBigramCount + count($this->vocab));
+            $probability = ($testTrigramCount + 1) / ($testBigramCount + $this->vocabcount);
 
             $vocabProbabilities[] = ['word' => $vocString, 'probability' => $probability];
         }
-        $baseProbability = 1.0 / count($this->vocab);
+        $baseProbability = 1.0 / $this->vocabcount;
 
         $relevantSuggestions = array_filter($vocabProbabilities, function($suggestion) use ($baseProbability) {
             return $suggestion['probability'] > $baseProbability;
         });
-
         usort($relevantSuggestions, fn($a, $b) => $b['probability'] <=> $a['probability']);
         // dd($relevantSuggestions);
         return array_slice($relevantSuggestions,0,7);

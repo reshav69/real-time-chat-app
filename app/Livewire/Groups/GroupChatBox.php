@@ -75,7 +75,7 @@ class GroupChatBox extends Component
 
         broadcast(new GroupMessageSent($newMessage));
         logger('Broadcasting group message to group.' . $this->group->id);
-        $this->appendGroupChatMessage($newMessage);
+        // $this->appendGroupChatMessage($newMessage);
         $this->dispatch('clearInput');
         $this->dispatch('scrollToBottom');
     }
@@ -84,11 +84,11 @@ class GroupChatBox extends Component
     // #[On('echo-private:group.{gid},GroupMessageSent')]
     public function listenForGroupMessage($event)
     {
-        $messageData = $event['groupMessage'];
+        $messageData = $event;
         $this->appendGroupChatMessage($messageData);
 
         $this->dispatch('scrollToBottom');
-        
+        $this->dispatch('messageupdates');
     }
     
     public function appendGroupChatMessage($messageData)
@@ -96,6 +96,7 @@ class GroupChatBox extends Component
 
         if ($messageData instanceof GroupMessage) {
             $this->messages[] = $messageData->toArray();
+
         } else {
            
              $this->messages[] = $messageData;

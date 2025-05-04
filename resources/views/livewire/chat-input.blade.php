@@ -13,7 +13,7 @@
     @endif
 
     <x-input
-            wire:model.live.debounce.400ms="message"
+            wire:model.live.debounce.200ms="message"
             id="message-input"
             name="message"
             type="text"

@@ -65,5 +65,10 @@
                 <a class="underline text-indigo-500" href="{{ route('login') }}">Login here</a>
             </div>
         </div>
+        @if (session()->has('error'))
+        <div class="mb-4 text-sm text-red-600 dark:text-red-400 text-center">
+            {{ session('error') }}
+        </div>
+    @endif
     </form>
 </div>

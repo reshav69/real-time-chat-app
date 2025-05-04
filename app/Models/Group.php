@@ -45,6 +45,6 @@ class Group extends Model
          if ($this->icon) {
             return asset('storage/'.$this->icon);
          }
-         return null; // Or asset('default-group-icon.png');
+         return asset('storage/group-icons/default-group-icon.png');
      }
 }

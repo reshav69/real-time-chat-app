@@ -16,6 +16,7 @@
     <div id="messages" class="flex-1 overflow-y-auto space-y-4 px-2 mb-10 text-black dark:text-white">
 
         @foreach ($messages as $msg)
+        {{-- @dd($msg['sender_id']) --}}
             <div class="flex flex-col
                 {{ $msg['sender_id'] === auth()->id() ? 'items-end' : 'items-start' }}">
                 
@@ -39,3 +40,16 @@
 
     
 </div>
+
+@script
+<script>
+        Livewire.on('scrollToBottom', () => {
+        
+        let messagesDiv = document.getElementById('messages');
+        setTimeout(() => {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 50);
+        // messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    })
+    </script>
+@endscript
