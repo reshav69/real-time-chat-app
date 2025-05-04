@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Livewire\Attributes\Title;
@@ -12,7 +12,7 @@ use App\Models\User;
 class Register extends Component
 {
 
-    #[Validate('required|string|min:3|max:250')]
+    #[Validate('required|string|min:3|max:250|alpha_dash')]
     public $username;
 
     #[Validate('required|email|max:250|unique:users,email')]

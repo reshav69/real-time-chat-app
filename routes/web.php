@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Register;
-use App\Livewire\Login;
-use App\Livewire\Dashboard;
-use App\Livewire\Logout;
+use App\Livewire\Auth\Register;
+use App\Livewire\Auth\Login;
+use App\Livewire\Auth\Dashboard;
+use App\Livewire\Auth\Logout;
 
 use App\Livewire\UserProfile;
 use App\Livewire\UserEdit;
 
-use App\Livewire\FriendRequestsPage;
+use App\Livewire\Friend\FriendRequestsPage;
 use App\Livewire\ChatBox;
 
 use App\Livewire\Groups\CreateGroup;

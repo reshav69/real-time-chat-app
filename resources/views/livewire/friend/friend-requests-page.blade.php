@@ -9,7 +9,7 @@
                 {{ $req->sender->username }}</a> wants to be your friend
             </p>
             <!-- Accept/Reject buttons here -->
-            @livewire('friend-request', ['receiver_id' => $req->sender->id,'requestId' => $req->id,], key($req->id))
+            @livewire('friend.friend-request', ['receiver_id' => $req->sender->id,'requestId' => $req->id,], key($req->id))
         </div>
     @empty
         <p>No incoming requests.</p>
@@ -24,14 +24,14 @@
 
             </a>
             </p>
-            @livewire('friend-request', ['receiver_id' => $req->receiver->id,'requestId' => $req->id,], key($req->id))
+            @livewire('friend.friend-request', ['receiver_id' => $req->receiver->id,'requestId' => $req->id,], key($req->id))
         </div>
     @empty
         <p>No sent requests.</p>
     @endforelse
         <hr class="m-5">
     <div>
-        <livewire:groups.group-invitation-page/>
+        <livewire:groups.group-invitation-page />
 
     </div>
 </div>

@@ -66,11 +66,7 @@
                         <a href="{{ route('profile.show', ['username' => auth()->user()->username]) }}"
                             class="bg-slate-800 p-2 w-full rounded-xl block mb-4 hover:bg-gray-900 flex justify-between">
                             {{-- <x-image-with-default :src="auth()->user()->profile_image" class="w-10 h-10 rounded-full" /> --}}
-                            @if (auth()->user()->profile_image)
-                            <img src="{{ asset('storage/'.auth()->user()->profile_image) }}" alt="" srcset="" width="28px">
-                            @else
-                            <img src="{{ asset('storage/user-pics/default.png') }}" width="28px" alt="" srcset="">
-                            @endif
+                            <img src="{{ asset(auth()->user()->profile_image_url) }}" alt="" class="max-w-[30px] object-cover rounded">
                             {{ auth()->user()->username }}
                         </a>
                         <a href="/logout" class="block w-full py-1 text-center border border-sky-600 rounded hover:bg-red-500">

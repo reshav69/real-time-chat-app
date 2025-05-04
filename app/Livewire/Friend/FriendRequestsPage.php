@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Friend;
 
 use Livewire\Component;
 use App\Models\FriendRequest;
@@ -21,6 +21,6 @@ class FriendRequestsPage extends Component
     }
     public function render()
     {
-        return view('livewire.friend-requests-page');
+        return view('livewire.friend.friend-requests-page');
     }
 }

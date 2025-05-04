@@ -4,7 +4,7 @@
     <p class="border-b border-gray-400 p-2 mb-5">Your Friends:</p>
     
 
-    <livewire:friend-list />
+    <livewire:friend.friend-list />
 
 </div>
 {{-- <x-layouts.app :title="'Dashboard'">

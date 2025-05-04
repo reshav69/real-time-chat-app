@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Friend;
 
 use Livewire\Component;
 use App\Models\FriendRequest as FR;
 use App\Models\Friend;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 class FriendRequest extends Component
 {
     public $sender_id;
@@ -15,7 +17,7 @@ class FriendRequest extends Component
     public $receiveruname;
     
     public function mount($receiver_id,$requestId = null){
-        $this->sender_id = auth()->id();
+        $this->sender_id = Auth::id();
         $this->receiver_id = $receiver_id;
         $this->requestId = $requestId;
         $this->request_status = $this->checkFriendRequestStatus();
@@ -101,7 +103,7 @@ class FriendRequest extends Component
         }
         $request = FR::find($this->requestId);
         // dd($request);
-        if($request && $request->receiver_id === auth()->id()){
+        if($request && $request->receiver_id ===Auth::id()){
             Friend::create([
                 'user_id'=>$request->sender_id,
                 'friend_id'=>$request->receiver_id
@@ -121,7 +123,7 @@ class FriendRequest extends Component
     public function rejectRequest(){
         $request = FR::find($this->requestId);
 
-        if ($request && $request->receiver_id === auth()->id()) {
+        if ($request && $request->receiver_id === Auth::id()) {
             $request->delete();
             $this->request_status = 'none';
             session()->flash('success', 'Friend request rejected.');
@@ -131,17 +133,17 @@ class FriendRequest extends Component
     public function unfriend(){
         $friendId = $this->receiver_id;
         Friend::where(function ($query) use ($friendId) {
-            $query->where('user_id', auth()->id())
+            $query->where('user_id', Auth::id())
                 ->where('friend_id', $friendId);
         })->orWhere(function ($query) use ($friendId) {
             $query->where('user_id', $friendId)
-                ->where('friend_id', auth()->id());
+                ->where('friend_id', Auth::id());
         })->delete();
         $this->request_status = 'none';
         session()->flash('success', 'Unfriended successfully.');
     }
     public function render()
     {
-        return view('livewire.friend-request');
+        return view('livewire.friend.friend-request');
     }
 }

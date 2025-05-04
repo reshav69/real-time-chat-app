@@ -22,7 +22,7 @@
 
     <div class="p-4">
         @if(auth()->id() !== $user->id)
-            @livewire('friend-request', ['receiver_id' => $user->id])
+            @livewire('friend.friend-request', ['receiver_id' => $user->id])
         @else
             <a href="{{ route('profile.edit') }}">Edit Profile?</a>
         @endif
