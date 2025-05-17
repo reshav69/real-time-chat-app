@@ -77,7 +77,7 @@ class NgramService
         $lastWord2 = $inputTokens[count($inputTokens) - 1];
         $testBigram = $lastWord1 . ' ' . $lastWord2;
 
-        $minFrequency = 3;
+        // $minFrequency = 3;
 
         $vocabProbabilities = [];
         foreach ($this->vocab as $vocString) {

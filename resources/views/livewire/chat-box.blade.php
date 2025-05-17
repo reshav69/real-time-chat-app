@@ -3,7 +3,7 @@
     <!-- Chat Header -->
     <div class="border-b pb-2 mb-4 flex justify-between items-center">
         <div class="flex items-center space-x-4">
-            <img src="https://img.icons8.com/?size=256w&id=7tLWAgSNQXZ3&format=png" alt="avatar" class="w-10 h-10 rounded-full object-cover border border-indigo-500">
+            <img src="{{ asset($receiver->profile_image_url) }}" alt="profile image" class="w-10 h-10 rounded-full object-cover border border-indigo-500">
             <a href="{{ route('profile.show', ['username' => $receiver->username]) }}" class="text-indigo-700 hover:underline text-2xl font-bold">
                 {{ $receiver->username }}
             </a>

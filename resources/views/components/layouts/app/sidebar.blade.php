@@ -105,9 +105,6 @@
 
             <div class="p-4 h-[calc(50vh-64px)] overflow-y-auto border-t border-indigo-500">
                 <h2 class="text-lg font-bold mb-4 border-b border-indigo-500">Recent Chats</h2>
-                @if (session()->has('error'))
-                <x-error-card/>
-                @endif
                 <nav class="space-y-2">
                     <livewire:recent-chats />
                 </nav>
